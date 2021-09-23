@@ -1,9 +1,14 @@
 import wollok.game.*
 import movingEntity.*
 import texto.*
+import configuracion.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(texto)
+	game.title("1942")
+
+	game.cellSize(10)
+	game.height(70)
+	game.width(120)
+	configuracion.configuracionInicial()
 	game.start()
 }
