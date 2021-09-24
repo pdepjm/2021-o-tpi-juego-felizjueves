@@ -2,6 +2,7 @@ import wollok.game.*
 import configuracion.*
 
 object avion {
+	const property type = "Avion"
 	var posicion = game.at(50,2)
 	var municiones = []
 	var potencia = null
@@ -18,13 +19,18 @@ object avion {
 		posicion = direccion.proximaPosicion(posicion) 
 	}
 	
+	method bajarVida()
+	{
+		vidas = vidas - 1
+		if (vidas  == 0) configuracion.gameOver()
+	}
+	
 	// Se me ocurre que potencia sea como un bonificador que cambie algunos parametros de la bala.
 	
 	method dispara(){
-		const newBala = new Municion(danioBala = 2, posicionBala = posicion.up(1).left(3))
-		newBala.salirDisparado()
+		const newBala = new Municion(danio = 2, posicionEntidad = posicion.up(6).right(4),velocidad = 3,vida = 1,imagenEntidad = "pepita.png")
 		game.addVisual(newBala)
-		game.schedule(2000,{game.removeVisual(newBala)})
+		newBala.configurar()
 	}
 }
 
@@ -37,24 +43,111 @@ object avion {
  * Ya "heredas" todos los parametros de la clase general.
  * 
  */
-class Municion
+
+
+class ObjetoVolador
 {
-	const velocidad = 5
-	var property danioBala 
-	var posicionBala
-	
-    method salirDisparado()
+    var vida
+    var property danio = 0
+    const property type
+    var velocidad = 0
+    var imagenEntidad = "default.png"
+    var posicionEntidad
+    
+    method configurar()
     {
-    	game.onTick(50,"pa' delante pues",{self.moverseAdelante()})
+    	self.desplazar()
+    	game.onCollideDo(self,{x => self.impacto(x)})
     }
-	
-	method moverseAdelante()
+    
+    method desplazar()
+  
+    method impacto(x)
+    
+    method morir()
+    {
+    	game.removeVisual(self)
+    }
+    
+    method bajarVida(_danio)
+    {
+    	vida = vida - danio
+    	if(vida <= 0) self.morir()
+    }
+    
+    method image() = imagenEntidad
+    
+    method position() = posicionEntidad 	
+}
+
+
+class Asteroide inherits ObjetoVolador (type = "Asteroide")
+{
+	override method impacto(objetoChoque)
 	{
-		posicionBala = posicionBala.up(velocidad)
+		if (objetoChoque.type() == "Bala")
+		{
+			self.bajarVida(objetoChoque.danioBala())
+		}
+		else if (objetoChoque.type() == "Avion")
+		{
+			objetoChoque.bajarVida()
+		}
 	}
 	
-	method position()  = posicionBala
-	method image() = "nada.png"
+	override method desplazar()
+	{
+		posicionEntidad = posicionEntidad.down(velocidad)
+    	
+    	if (posicionEntidad.y() < -1)
+    	{
+    		self.morir()
+    	}
+    	
+    	game.schedule(100,{self.desplazar()})
+	}
+	
+	override method configurar()
+	{
+		if (vida < 1)
+		{
+			imagenEntidad = "asteroideChiquitin.png"
+			velocidad = 1
+			danio = 3
+		}
+		else if (vida >= 1 and vida < 3) 
+		{
+			imagenEntidad = "asteroideMediano.png"
+			velocidad = 2
+			danio = 2
+		}
+		else 
+		{
+			imagenEntidad = "asteroideGrande.png"
+			velocidad = 3
+			danio = 1
+		}
+		
+		self.desplazar()
+	}
+}
+
+class Municion inherits ObjetoVolador (type = "Bala")
+{
+	
+	override method desplazar()
+	{
+		posicionEntidad = posicionEntidad.up(velocidad)
+		
+		game.schedule(100,{self.desplazar()})
+	}
+	
+	override method impacto(x)
+	{
+		self.bajarVida(1)
+	}
+	
+	
 }
 
 
