@@ -13,19 +13,50 @@ object avion {
 	method position (){
 		return posicion
 	}
+	
 	method moverHacia(direccion) {
 		posicion = direccion.proximaPosicion(posicion) 
 	}
+	
+	// Se me ocurre que potencia sea como un bonificador que cambie algunos parametros de la bala.
+	
 	method dispara(){
-		//aca vamos a hacer uso del POLIMORFISMO segun quien reciba el disparo..si es la basura grande o chica
+		const newBala = new Municion(danioBala = 2, posicionBala = posicion.up(1).left(3))
+		newBala.salirDisparado()
+		game.addVisual(newBala)
+		game.schedule(2000,{game.removeVisual(newBala)})
 	}
 }
 
-object espacio { //solo queria poner una imagen de fondo pero no logre subirla
-	method image(){
-		return "espacio.png"
+/* Clase general de municiones. Si se quiere crear otra municion con hacer:
+ * 
+ * class MunicionEspecial inherits Municion
+ * {
+ * }
+ * 
+ * Ya "heredas" todos los parametros de la clase general.
+ * 
+ */
+class Municion
+{
+	const velocidad = 5
+	var property danioBala 
+	var posicionBala
+	
+    method salirDisparado()
+    {
+    	game.onTick(50,"pa' delante pues",{self.moverseAdelante()})
+    }
+	
+	method moverseAdelante()
+	{
+		posicionBala = posicionBala.up(velocidad)
 	}
+	
+	method position()  = posicionBala
+	method image() = "nada.png"
 }
+
 
  //faltarian crear la clase de basura espacial y la clase heredada de la basura espacial ( o el nombre q sea)
  

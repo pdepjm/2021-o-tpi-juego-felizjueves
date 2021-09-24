@@ -5,7 +5,7 @@ import direcciones.*
 object configuracion {
 	method configuracionInicial(){
 		game.addVisual(avion)		
-		//game.ground(espacio)
+		game.boardGround("espacio.png")
 		self.configurarTeclas()
 	}
 
@@ -14,6 +14,7 @@ object configuracion {
 		keyboard.up().onPressDo({ avion.moverHacia(arriba) })
 		keyboard.right().onPressDo({avion.moverHacia(derecha) })
 		keyboard.down().onPressDo({avion.moverHacia(abajo) })
+		keyboard.space().onPressDo({avion.dispara()})
 
 	}
 	
