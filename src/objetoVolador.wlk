@@ -9,8 +9,8 @@ class ObjetoVolador
     var property danio 
     const property type
     var velocidad = 0
-    var imagenEntidad = "default.png"
-    var posicionEntidad
+    var imagenObjeto = "default.png"
+    var posicionObjeto
     
     method configurar()
     {
@@ -30,9 +30,9 @@ class ObjetoVolador
     	}
     }
     
-    method image() = imagenEntidad
+    method image() = imagenObjeto
     
-    method position() = posicionEntidad 	
+    method position() = posicionObjeto 	
 }
 
 
@@ -42,9 +42,9 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 	
 	override method desplazar()
 	{
-		posicionEntidad = posicionEntidad.down(velocidad)
+		posicionObjeto = posicionObjeto.down(velocidad)
     	
-    	if (posicionEntidad.y() < -1)
+    	if (posicionObjeto.y() < -1)
     	{
     		game.removeVisual(self)
     	}
@@ -58,19 +58,19 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 		super()
 		if (vida < 2)
 		{
-			imagenEntidad = "asteroideChiquitin.png"
+			imagenObjeto = "asteroideChiquitin.png"
 			velocidad = 0
 			danio = 3
 		}
 		else if (vida >= 2 and vida < 4) 
 		{
-			imagenEntidad = "asteroideMediano.png"
+			imagenObjeto = "asteroideMediano.png"
 			velocidad = 0
 			danio = 2
 		}
 		else 
 		{
-			imagenEntidad = "asteroideGrande.png"
+			imagenObjeto = "asteroideGrande.png"
 			velocidad = 0
 			danio = 1
 		}
@@ -84,8 +84,11 @@ class Municion inherits ObjetoVolador (type = "Bala")
 	
 	override method desplazar()
 	{
-		posicionEntidad = posicionEntidad.up(velocidad)
-		
+		posicionObjeto = posicionObjeto.up(velocidad)
+		if (posicionObjeto.y() > 25|| vida ==0) // ->veo q el objeto desaparece en la linea 25 o cuando choca
+    	{
+    		game.removeVisual(self)				
+    	}
 		game.schedule(100,{self.desplazar()})
 	}
 	

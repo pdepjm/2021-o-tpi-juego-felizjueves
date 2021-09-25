@@ -2,9 +2,13 @@
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+BERONNE, LUCAS ARIEL
+CAJAL LIÑAN, FACUNDO SALOMON
+KANESHIRO, DAIANA ANABEL	
+LIFRIERI, GONZALO OSCAR
+MOYANO, LAUTARO
+SANCHEZ, ROCIO
+
 
 ## Capturas
 
@@ -16,4 +20,8 @@
 
 ## Respuestas teóricas
 
-(link al archivo o bien responder acá)
+Polimorfismo
+Colecciones
+Clases
+Herencia
+Composición

@@ -4,8 +4,8 @@ import configuracion.*
 program juego {
 	game.title("1942")
 
-	game.cellSize(10)
-	game.height(70) 
+	game.cellSize(50)
+	game.height(30) 
 	game.width(20)
 	configuracion.configuracionInicial() 
 	game.start()
