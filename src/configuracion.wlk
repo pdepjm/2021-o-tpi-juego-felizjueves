@@ -50,7 +50,7 @@ class LanzadorDeAsteroides inherits LanzadorDeObjetos
 	override method lanzarObjeto()
 	{
 		const posicionInicioAleatoria = game.center()
-		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionEntidad = posicionInicioAleatoria,danio=1)
+		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionObjeto = posicionInicioAleatoria,danio=1)
 		game.addVisual(nuevoAsteroide)
 		nuevoAsteroide.configurar()
 	}
