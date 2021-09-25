@@ -6,7 +6,7 @@ import avion.*
 class ObjetoVolador
 {
     var vida
-    var property danio = 0
+    var property danio 
     const property type
     var velocidad = 0
     var imagenEntidad = "default.png"
@@ -21,15 +21,13 @@ class ObjetoVolador
     method desplazar()
   
     
-    method morir()
-    {
-    	game.removeVisual(self)
-    }
-    
     method bajarVida(_danio)
     {
-    	vida = vida - danio
-    	if(vida <= 0) self.morir()
+    	vida = vida - _danio
+    	if(vida <= 0)
+    	{ 
+    		game.removeVisual(self)
+    	}
     }
     
     method image() = imagenEntidad
@@ -48,7 +46,7 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
     	
     	if (posicionEntidad.y() < -1)
     	{
-    		self.morir()
+    		game.removeVisual(self)
     	}
     	
     	game.schedule(100,{self.desplazar()})
@@ -56,22 +54,24 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 	
 	override method configurar()
 	{
-		if (vida < 1)
+		
+		super()
+		if (vida < 2)
 		{
 			imagenEntidad = "asteroideChiquitin.png"
-			velocidad = 1
+			velocidad = 0
 			danio = 3
 		}
-		else if (vida >= 1 and vida < 3) 
+		else if (vida >= 2 and vida < 4) 
 		{
 			imagenEntidad = "asteroideMediano.png"
-			velocidad = 2
+			velocidad = 0
 			danio = 2
 		}
 		else 
 		{
 			imagenEntidad = "asteroideGrande.png"
-			velocidad = 3
+			velocidad = 0
 			danio = 1
 		}
 		

@@ -34,7 +34,7 @@ object configuracion {
 	method crearLanzadores()
 	{
 		const x = new LanzadorDeAsteroides()
-		game.onTick(1000, "blah",{x.lanzarObjeto()})
+		game.onTick(10000, "blah",{x.lanzarObjeto()})
 	}
 	
 }
@@ -49,8 +49,8 @@ class LanzadorDeAsteroides inherits LanzadorDeObjetos
 	
 	override method lanzarObjeto()
 	{
-		const posicionInicioAleatoria = game.center().up(50).right(-20.randomUpTo(20))
-		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionEntidad = posicionInicioAleatoria)
+		const posicionInicioAleatoria = game.center()
+		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionEntidad = posicionInicioAleatoria,danio=1)
 		game.addVisual(nuevoAsteroide)
 		nuevoAsteroide.configurar()
 	}

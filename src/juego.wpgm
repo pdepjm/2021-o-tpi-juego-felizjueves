@@ -6,7 +6,7 @@ program juego {
 
 	game.cellSize(10)
 	game.height(70) 
-	game.width(120)
-	configuracion.configuracionInicial()
+	game.width(20)
+	configuracion.configuracionInicial() 
 	game.start()
 }

@@ -5,7 +5,7 @@ import objetoVolador.*
 object avion {
 	const property type = "Avion"
 	
-	var property posicion = game.at(50,2)
+	var property posicion = game.at(0,2)
 	
 	var municiones = [balaDefault]
 	
@@ -51,7 +51,7 @@ object balaDefault inherits TipoDeBala
 {
 	override method disparar(avion)
 	{
-		const bala = new Municion(vida = 3, posicionEntidad = avion.posicion(),velocidad = 3,danio = 1,imagenEntidad = "pepita.png")
+		const bala = new Municion(vida = 1, posicionEntidad = avion.posicion(),velocidad = 1,danio = 1,imagenEntidad = "pepita.png")
 		game.addVisual(bala)
 		bala.configurar()
 	}
