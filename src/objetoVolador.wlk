@@ -15,12 +15,11 @@ class ObjetoVolador
     method configurar()
     {
     	self.desplazar()
-    	game.onCollideDo(self,{x => self.impacto(x)})
+    	game.onCollideDo(self,{x => configuracion.impacto(x,self)})
     }
     
     method desplazar()
   
-    method impacto(x)
     
     method morir()
     {
@@ -41,17 +40,7 @@ class ObjetoVolador
 
 class Asteroide inherits ObjetoVolador (type = "Asteroide")
 {
-	override method impacto(objetoChoque)
-	{
-		if (objetoChoque.type() == "Bala")
-		{
-			self.bajarVida(objetoChoque.danioBala())
-		}
-		else if (objetoChoque.type() == "Avion")
-		{
-			objetoChoque.bajarVida()
-		}
-	}
+	
 	
 	override method desplazar()
 	{
@@ -98,11 +87,6 @@ class Municion inherits ObjetoVolador (type = "Bala")
 		posicionEntidad = posicionEntidad.up(velocidad)
 		
 		game.schedule(100,{self.desplazar()})
-	}
-	
-	override method impacto(x)
-	{
-		self.bajarVida(1)
 	}
 	
 	

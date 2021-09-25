@@ -1,6 +1,4 @@
 import wollok.game.*
-import movingEntity.*
-import texto.*
 import configuracion.*
 
 program juego {

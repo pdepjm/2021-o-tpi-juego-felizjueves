@@ -4,10 +4,23 @@ import objetoVolador.*
 
 object avion {
 	const property type = "Avion"
-	var posicion = game.at(50,2)
-	var municiones = []
-	var potencia = null
-	var vidas = 3 // si pierde 3 veces termina el juego
+	
+	var property posicion = game.at(50,2)
+	
+	var municiones = [balaDefault]
+	
+	var carcaza = null
+	
+	var municionSeleccionada = 0
+	
+	method cambiarMunicion()
+	{
+		municionSeleccionada = (municionSeleccionada + 1).rem(municiones.length())
+	}
+	
+	method danio() = carcaza.danio()
+    
+    method vida() = carcaza.vida()
 	
 	method image() {
 		return "avion.png"
@@ -20,18 +33,40 @@ object avion {
 		posicion = direccion.proximaPosicion(posicion) 
 	}
 	
-	method bajarVida()
-	{
-		vidas = vidas - 1
-		if (vidas  == 0) configuracion.gameOver()
-	}
+	method bajarVida() {carcaza.bajarVida()}
 	
-	// Se me ocurre que potencia sea como un bonificador que cambie algunos parametros de la bala.
+	
 	
 	method dispara(){
-		const newBala = new Municion(danio = 2, posicionEntidad = posicion.up(6).right(4),velocidad = 3,vida = 1,imagenEntidad = "pepita.png")
-		game.addVisual(newBala)
-		newBala.configurar()
+		municiones.get(municionSeleccionada).disparar(self)
+	}
+}
+
+class TipoDeBala
+{
+	method disparar(avion)
+}
+
+object balaDefault inherits TipoDeBala
+{
+	override method disparar(avion)
+	{
+		const bala = new Municion(vida = 3, posicionEntidad = avion.posicion(),velocidad = 3,danio = 1,imagenEntidad = "pepita.png")
+		game.addVisual(bala)
+		bala.configurar()
+	}
+}
+
+class Carcaza
+{
+	var property vida
+	var property danio
+	var property municiones
+	
+	method bajarVida()
+	{
+		vida = vida - 1
+		if (vida  == 0) configuracion.gameOver()
 	}
 }
 
