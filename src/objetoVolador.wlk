@@ -55,8 +55,8 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 		if (vida < 2)
 		{
 			imagenObjeto = "asteroideChiquitin.png"
-			velocidad = 2
-			danio = 3
+			velocidad = 1
+			danio = 1
 		}
 		else if (vida >= 2 and vida < 4) 
 		{
@@ -68,7 +68,7 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 		{
 			imagenObjeto = "asteroideGrande.png"
 			velocidad = 1
-			danio = 1
+			danio = 3
 		}
 		
 		self.desplazar()
@@ -82,11 +82,12 @@ class Municion inherits ObjetoVolador (type = "Bala")
 	{
 		posicionObjeto = posicionObjeto.up(velocidad)
 		
-		if (posicionObjeto.y() > 25)
+		if (posicionObjeto.y() > 17)
     	{
     		game.removeVisual(self)				
     	}		
 	}
+	
 	
 	
 }

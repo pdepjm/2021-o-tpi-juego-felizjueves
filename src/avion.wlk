@@ -5,7 +5,7 @@ import objetoVolador.*
 object avion {
 	const property type = "Avion"
 	
-	var property posicion = game.at(0,2)
+	var property posicion = game.at(15,0)
 	
 	var municiones = [balaDefault]
 	
@@ -16,6 +16,7 @@ object avion {
 	method cambiarMunicion()
 	{
 		municionSeleccionada = (municionSeleccionada + 1).rem(municiones.length())
+
 	}
 	
 	method danio() = carcaza.danio()
@@ -36,13 +37,18 @@ object avion {
 	method bajarVida() {carcaza.bajarVida()}
 	
 	
-	
-	method dispara(){
+	/* 
+	method dispara(municionSeleccionada){
 		municiones.get(municionSeleccionada).disparar(self)
+	}*/
+	method dispara(municionElegida){
+		municionElegida.disparar(self)
 	}
 	
 	method desplazar(){}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class TipoDeBala
 {
@@ -53,11 +59,33 @@ object balaDefault inherits TipoDeBala
 {
 	override method disparar(avion)
 	{
-		const bala = new Municion(vida = 1, posicionObjeto = avion.posicion(),velocidad = 1,danio = 1,imagenObjeto = "misil_grande.png")
+		const balaDefault = new Municion(vida = 1, posicionObjeto = avion.posicion(),velocidad = 1,danio = 1,imagenObjeto = "misil_grande.png")
+		game.addVisual(balaDefault)
+		balaDefault.configurar()
+		}
+}
+	
+object balaTriple inherits TipoDeBala
+{
+	override method disparar(avion)
+	{
+		const balaTriple = new Municion(vida = 3, posicionObjeto = avion.posicion(),velocidad = 1,danio = 4,imagenObjeto = "misil_triple.png")
+		game.addVisual(balaTriple)
+		balaTriple.configurar()
+		}
+}
+
+object balaChica inherits TipoDeBala
+{
+	override method disparar(avion)
+	{		
+		const bala = new Municion(vida = 1, posicionObjeto = avion.posicion(),velocidad = 1,danio = 1,imagenObjeto = "misil_chico.png")
 		game.addVisual(bala)
 		bala.configurar()
+		}
+	
 	}
-}
+	
 
 class Carcaza
 {
