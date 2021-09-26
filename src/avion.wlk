@@ -53,7 +53,7 @@ object balaDefault inherits TipoDeBala
 {
 	override method disparar(avion)
 	{
-		const bala = new Municion(vida = 1, posicionObjeto = avion.posicion(),velocidad = 1,danio = 1,imagenObjeto = "pepita.png")
+		const bala = new Municion(vida = 1, posicionObjeto = avion.posicion(),velocidad = 1,danio = 1,imagenObjeto = "misil_grande.png")
 		game.addVisual(bala)
 		bala.configurar()
 	}
