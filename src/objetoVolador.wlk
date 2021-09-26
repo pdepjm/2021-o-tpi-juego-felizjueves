@@ -38,18 +38,14 @@ class ObjetoVolador
 
 class Asteroide inherits ObjetoVolador (type = "Asteroide")
 {
-	
-	
 	override method desplazar()
 	{
 		posicionObjeto = posicionObjeto.down(velocidad)
-    	
+		
     	if (posicionObjeto.y() < -1)
     	{
     		game.removeVisual(self)
     	}
-    	
-    	game.schedule(100,{self.desplazar()})
 	}
 	
 	override method configurar()
@@ -59,19 +55,19 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 		if (vida < 2)
 		{
 			imagenObjeto = "asteroideChiquitin.png"
-			velocidad = 0
+			velocidad = 2
 			danio = 3
 		}
 		else if (vida >= 2 and vida < 4) 
 		{
 			imagenObjeto = "asteroideMediano.png"
-			velocidad = 0
+			velocidad = 1
 			danio = 2
 		}
 		else 
 		{
 			imagenObjeto = "asteroideGrande.png"
-			velocidad = 0
+			velocidad = 1
 			danio = 1
 		}
 		
@@ -85,22 +81,14 @@ class Municion inherits ObjetoVolador (type = "Bala")
 	override method desplazar()
 	{
 		posicionObjeto = posicionObjeto.up(velocidad)
-		if (posicionObjeto.y() > 25|| vida ==0) // ->veo q el objeto desaparece en la linea 25 o cuando choca
+		
+		if (posicionObjeto.y() > 25)
     	{
     		game.removeVisual(self)				
-    	}
-		game.schedule(100,{self.desplazar()})
+    	}		
 	}
 	
 	
 }
 
-/* Clase general de municiones. Si se quiere crear otra municion con hacer:
- * 
- * class MunicionEspecial inherits Municion
- * {
- * }
- * 
- * Ya "heredas" todos los parametros de la clase general.
- * 
- */
+

@@ -40,6 +40,8 @@ object avion {
 	method dispara(){
 		municiones.get(municionSeleccionada).disparar(self)
 	}
+	
+	method desplazar(){}
 }
 
 class TipoDeBala
@@ -61,13 +63,14 @@ class Carcaza
 {
 	var property vida
 	var property danio
-	var property municiones
 	
 	method bajarVida()
 	{
 		vida = vida - 1
-		if (vida  == 0) configuracion.gameOver()
+		// todo: gameOver
 	}
+	
+	method habilidadEspecial()
 }
 
 

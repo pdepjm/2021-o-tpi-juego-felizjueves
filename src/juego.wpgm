@@ -7,6 +7,6 @@ program juego {
 	game.cellSize(50)
 	game.height(30) 
 	game.width(20)
-	configuracion.configuracionInicial() 
+	configuracion.mainMenu()
 	game.start()
 }
