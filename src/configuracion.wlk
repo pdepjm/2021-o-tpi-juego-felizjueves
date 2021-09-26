@@ -19,21 +19,30 @@ object configuracion {
 		keyboard.up().onPressDo({ avion.moverHacia(arriba) })
 		keyboard.right().onPressDo({avion.moverHacia(derecha) })
 		keyboard.down().onPressDo({avion.moverHacia(abajo) })
-		keyboard.space().onPressDo({avion.dispara()})
+		keyboard.space().onPressDo({avion.dispara(balaDefault)})
+		keyboard.z().onPressDo({avion.dispara(balaTriple)})
+		keyboard.x().onPressDo({avion.dispara(balaChica)})
 	}
 	
 	method mainMenu()
 	{
 		game.clear()
-		game.boardGround("fondo_menu.png")
-		game.addVisual(object { method image() = "play.png" method position() = game.at(2,3)})
-		game.addVisual(object { method image() = "controles.png" method position() = game.at(3,5)})
-		game.addVisual(object { method image() = "salir.png" method position() = game.at(5,8)})
+		game.boardGround("espacio.png")
+		game.addVisual(object { method image() = "comenzar.png" method position() = game.at(2,13)})
+		game.addVisual(object { method image() = "controles.png" method position() = game.at(2,9)})
+		game.addVisual(object { method image() = "salir.png" method position() = game.at(2,5)})
 		
-		keyboard.enter().onPressDo({self.configuracionDeJuego()})
-		keyboard.w().onPressDo({self.controles()}) 
+		keyboard.w().onPressDo({self.configuracionDeJuego()})
+		keyboard.q().onPressDo({self.controles()}) 
 		keyboard.s().onPressDo({game.stop()})
 		
+	} 
+	
+	method controles(){
+		game.clear()
+		game.boardGround("espacio.png")
+		game.addVisual(object { method image() = "comenzar.png" method position() = game.at(2,13)})
+		keyboard.w().onPressDo({self.mainMenu()})
 	}
 	
 	method impacto(x,y)
@@ -56,7 +65,7 @@ object configuracion {
 	
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class LanzadorDeObjetos{
 	
 	method lanzarObjeto()
@@ -67,7 +76,7 @@ class LanzadorDeAsteroides inherits LanzadorDeObjetos
 	
 	override method lanzarObjeto()
 	{
-		const posicionInicioAleatoria = game.center().up(40).right((-20).randomUpto(20))
+		const posicionInicioAleatoria = game.center().up(40).right((-20).randomUpTo(20))
 		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionObjeto = posicionInicioAleatoria,danio=1)
 		game.addVisual(nuevoAsteroide)
 		nuevoAsteroide.configurar()
