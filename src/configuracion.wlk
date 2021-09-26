@@ -31,7 +31,7 @@ object configuracion {
 		game.addVisual(object { method image() = "salir.png" method position() = game.at(5,8)})
 		
 		keyboard.enter().onPressDo({self.configuracionDeJuego()})
-		keyboard.w().onPressDo({self.controles()})
+		keyboard.w().onPressDo({self.controles()}) 
 		keyboard.s().onPressDo({game.stop()})
 		
 	}
