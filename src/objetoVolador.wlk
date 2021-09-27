@@ -11,6 +11,8 @@ class ObjetoVolador
     var velocidad = 0
     var imagenObjeto = "default.png"
     var posicionObjeto
+    var property esChocable = true
+    var property seMueve = true
     
     method configurar()
     {
@@ -26,8 +28,13 @@ class ObjetoVolador
     	vida = vida - _danio
     	if(vida <= 0)
     	{ 
-    		game.removeVisual(self)
+    		self.morir()
     	}
+    }
+    
+    method morir()
+    {
+    	game.removeVisual(self)
     }
     
     method image() = imagenObjeto
@@ -38,6 +45,15 @@ class ObjetoVolador
 
 class Asteroide inherits ObjetoVolador (type = "Asteroide")
 {
+	
+	var puntaje = 0
+	
+	override method morir()
+	{
+		super()
+		pointTracker.aumentarPuntaje(puntaje)
+	}
+	
 	override method desplazar()
 	{
 		posicionObjeto = posicionObjeto.down(velocidad)
@@ -55,20 +71,23 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
 		if (vida < 2)
 		{
 			imagenObjeto = "asteroideChiquitin.png"
-			velocidad = 1
+			velocidad = 0.2
 			danio = 1
+			puntaje = 10
 		}
 		else if (vida >= 2 and vida < 4) 
 		{
 			imagenObjeto = "asteroideMediano.png"
-			velocidad = 1
+			velocidad = 0.15
 			danio = 2
+			puntaje = 15
 		}
 		else 
 		{
 			imagenObjeto = "asteroideGrande.png"
-			velocidad = 1
+			velocidad = 0.1
 			danio = 3
+			puntaje = 20
 		}
 		
 		self.desplazar()
