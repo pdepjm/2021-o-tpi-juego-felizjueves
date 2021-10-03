@@ -3,7 +3,7 @@ import configuracion.*
 
 program juego {
 	game.title("1942")
-	game.cellSize(150)
+	game.cellSize(30)
 	game.height(24) 
 	game.width(30)
 	configuracion.mainMenu()

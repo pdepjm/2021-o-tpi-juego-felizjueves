@@ -22,7 +22,8 @@ class ObjetoVolador
     
     method desplazar()
   
-    
+    method chocarContra(objeto)
+  
     method bajarVida(_danio)
     {
     	vida = vida - _danio
@@ -62,6 +63,11 @@ class Asteroide inherits ObjetoVolador (type = "Asteroide")
     	{
     		game.removeVisual(self)
     	}
+	}
+	
+	override method chocarContra(objeto)
+	{
+	self.bajarVida(objeto.danio())
 	}
 	
 	override method configurar()
@@ -105,6 +111,33 @@ class Municion inherits ObjetoVolador (type = "Bala")
     	{
     		game.removeVisual(self)				
     	}		
+	}
+	
+	override method chocarContra(objeto)
+	{
+		if (objeto.type() == "Asteroide")
+		{
+			self.bajarVida(objeto.danio())
+		}
+	}
+	
+	
+	
+}
+
+class Provision inherits ObjetoVolador (type = "Bala", velocidad = 2, vida = 1,danio = 0)
+{
+	const tipoDeProvision
+	const cantidad
+	
+	
+	override method chocarContra(objeto){
+		if (objeto.tipo() == "avion")
+		{
+			objeto.cargarMunicion(tipoDeProvision,cantidad)
+			self.morir()
+		}
+		
 	}
 	
 	

@@ -2,6 +2,7 @@ import avion.*
 import wollok.game.*
 import direcciones.*
 import objetoVolador.*
+import balas.*
 
 object configuracion {
 	
@@ -10,6 +11,7 @@ object configuracion {
 		game.addVisual(avion)	
 		game.addVisual(avion.municiones().get(0))
 		game.addVisual(pointTracker)	
+		game.addVisual(contadorDeMunicion)
 		pointTracker.reset()
 		game.boardGround("espacio.png")
 		self.configurarTeclas()
@@ -56,11 +58,8 @@ object configuracion {
 	
 	method impacto(x,y)
 	{
-	if(x.esChocable() and y.esChocable())
-	{ 
-	  x.bajarVida(y.danio())
-	  y.bajarVida(x.danio())
-	}
+	x.chocarContra(y)
+	y.chocarContra(x)
 	}
 	
 	method crearLanzadores()
@@ -77,11 +76,16 @@ object configuracion {
 	
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-object pointTracker
+class Texto
 {
-	var property esChocable = false
-	var property seMueve = false
+	const property danio = 0
+	const property seMueve = false
+	method chocarContra(objeto){}
+}
+
+
+object pointTracker inherits Texto
+{
 	
 	var property puntajeAcumulado = 0
 	
@@ -90,8 +94,11 @@ object pointTracker
 		puntajeAcumulado = 0
 	}
 	
-	method desplazar()
-	{}
+	
+	
+	method chocarContra(objeto){}
+	
+	
 	
 	method position() = game.at(20,20)
 	

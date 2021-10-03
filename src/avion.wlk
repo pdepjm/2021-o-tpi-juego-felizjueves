@@ -23,8 +23,17 @@ object avion {
 	{
 		game.removeVisual(municiones.get(municionSeleccionada))
 		municionSeleccionada = (municionSeleccionada + 1).rem(municiones.size())
+		contadorDeMunicion.cambiarMunicion(municiones.get(municionSeleccionada))
 		game.addVisual(municiones.get(municionSeleccionada))
 
+	}
+	
+	method chocarContra(objeto)
+	{
+		if (objeto.type() == "asteroide")
+		{
+			self.bajarVida(objeto.danio())
+		}
 	}
 	
 	method danio() = carcaza.danio()
@@ -48,6 +57,11 @@ object avion {
 	 
 	method dispara(){
 		municiones.get(municionSeleccionada).disparar(self)
+	}
+	
+	method cargarMunicion(tipoDeMunicion,cantidad)
+	{
+		
 	}
 	
 	//method dispara(municionElegida){

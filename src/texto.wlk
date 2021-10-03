@@ -18,6 +18,7 @@ object texto {
 	method text() = "¡Pepita!"
 	
 	method textColor() = paleta.verde()
+
 	
 }
 
