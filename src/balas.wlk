@@ -28,8 +28,8 @@ object cartuchoDefault inherits Cartucho (bala = balaDefault,cantidadDeBalas = 3
 object cartuchoGrande inherits Cartucho (bala = balaGrande,cantidadDeBalas = 10) {}
 
 object balaDefault inherits TemplateBala(danio = 1, imagen = "misil_chico.png", velocidad = 1){}
-object balaMediana inherits  TemplateBala(danio = 2, imagen = "misil_triple.png", velocidad = 0.3){}
-object balaGrande inherits  TemplateBala(danio = 3, imagen = "misil_grande.png", velocidad = 0.3){}
+object balaMediana inherits  TemplateBala(danio = 2, imagen = "misil_triple.png", velocidad = 1){}
+object balaGrande inherits  TemplateBala(danio = 3, imagen = "misil_grande.png", velocidad = 1){}
 
 
 class Bala inherits MovingObject(tipo  = "Bala", tiposQueChocaContra = ["Asteroide", "Provision"])
