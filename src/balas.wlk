@@ -1,60 +1,64 @@
 import wollok.game.*
-import avion.*
-import objetoVolador.*
+import objetoGenerico.*
 import configuracion.*
+import avion.*
 
-
-class TipoDeBala inherits Texto
+class Cartucho
 {
+	var property bala
+	
+	var cantidadDeBalas
+	
+	method consumirBala() {cantidadDeBalas -= 1}
+	
+	method tieneBalas() = cantidadDeBalas > 0
+}
 
+class TemplateBala 
+{
+	const property danio
+	const property imagen
+	const property velocidad
+	method crearTemplateBala() = new Bala(velocidad = self.velocidad(), image = self.imagen(), position = avion.position(), danio = self.danio())
 	
-	const vidaBala
-	const velocidadBala
-	const danioBala
-	const imagenDeBala
+}
+
+object cartuchoDefault inherits Cartucho (bala = balaDefault,cantidadDeBalas = 30){}
+
+object cartuchoGrande inherits Cartucho (bala = balaGrande,cantidadDeBalas = 10) {}
+
+object balaDefault inherits TemplateBala(danio = 1, imagen = "misil_chico.png", velocidad = 1){}
+object balaMediana inherits  TemplateBala(danio = 2, imagen = "misil_triple.png", velocidad = 0.3){}
+object balaGrande inherits  TemplateBala(danio = 3, imagen = "misil_grande.png", velocidad = 0.3){}
+
+
+class Bala inherits MovingObject(tipo  = "Bala", tiposQueChocaContra = ["Asteroide", "Provision"])
+{
+	const danio
+	method reducirVida(x){self.morir()}
 	
-	var property cantidadDeMunicion 
+	override method aplicarEfectoSobre(objetoQueChoca)
+	{
 	
-	const texto 
-	
-	method position() = game.at(20,1)
-	
-	
-	method text() = texto
-	
- method disparar(avion)
-	{	
-		if (cantidadDeMunicion > 0)
-		{	
-		const bala = new Municion(vida = vidaBala, posicionObjeto = avion.posicion(),velocidad = velocidadBala,danio = danioBala,imagenObjeto = imagenDeBala)
-		game.addVisual(bala)
-		bala.configurar()
-		cantidadDeMunicion = cantidadDeMunicion - 1
+		objetoQueChoca.reducirVida(danio)
+		
+		if (objetoQueChoca.tipo() == "Asteroide" and objetoQueChoca.sinVida()) 
+		{
+		pointTracker.aumentarPuntaje(objetoQueChoca.puntaje())
 		}
-	}	
-}
-
-object balaDefault inherits TipoDeBala(texto = "Municion Default", cantidadDeMunicion = 10,vidaBala = 1, velocidadBala = 1.5,danioBala = 2,imagenDeBala = "misil_chico.png")
-{
-}
-	
-object balaTriple inherits TipoDeBala(texto = "Municion Triple", cantidadDeMunicion = 5,vidaBala = 2, velocidadBala = 1,danioBala = 3, imagenDeBala = "misil_triple.png")
-{
-
-}
-
-object balaChica inherits TipoDeBala(texto = "Municion Chica", cantidadDeMunicion = 40,vidaBala = 1, velocidadBala = 2,danioBala = 1,imagenDeBala = "misil_grande.png")
-{
-	
-}
-
-object contadorDeMunicion inherits Texto
-{
-	var property tipoDeMunicion = balaDefault
-	method cambiarMunicion(nuevaMunicion){
-		tipoDeMunicion = nuevaMunicion
 	}
-	method text() = "Cantidad de municion:  " + tipoDeMunicion.cantidadDeMunicion().toString()
-	method position() = game.at(25,1)
-	
 }
+
+class Provision inherits MovingObject(velocidad = 1, tiposQueChocaContra = ["Avion"])
+{
+	const cartucho
+	
+	method reducirVida(danio){self.morir()}
+	
+	override method aplicarEfectoSobre(Avion)
+	{
+	avion.agregarMunicion(cartucho)
+	}
+
+}
+

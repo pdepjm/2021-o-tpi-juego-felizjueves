@@ -3,9 +3,12 @@ import configuracion.*
 
 program juego {
 	game.title("1942")
-	game.cellSize(30)
-	game.height(24) 
-	game.width(30)
+	game.cellSize(50)
+	game.height(15) 
+	game.width(20)
 	configuracion.mainMenu()
 	game.start()
 }
+ 
+ 
+ //habria q eliminar archivos: objetoVolado

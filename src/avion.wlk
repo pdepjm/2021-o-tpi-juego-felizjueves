@@ -1,75 +1,84 @@
 import wollok.game.*
+import objetoGenerico.*
 import configuracion.*
-import objetoVolador.*
 import balas.*
-import carcaza.*
 
-object avion {
-	const property type = "Avion"
+object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Asteroide","Provision"], position = game.at(game.center().x(),0), image = "avion.png")
+{
+	const arma = rifle
+	var armadura = carcaza
 	
-	var property esChocable = true
 	
-	var property posicion = game.at(15,0)
-	
-	var property municiones = [balaDefault,balaTriple,balaChica]
-	
-	var carcaza = carcazaDefault
-	
-	var municionSeleccionada = 0
-	
-	var property seMueve = true
-	
-	method cambiarMunicion()
+	method seMueve() = false // No se mueve automaticamente
+
+ 	method reducirVida(cuanto) {
+   	
+   	carcaza.reducirVida(cuanto)
+   }
+
+   method moverHacia(direccion)
 	{
-		game.removeVisual(municiones.get(municionSeleccionada))
-		municionSeleccionada = (municionSeleccionada + 1).rem(municiones.size())
-		contadorDeMunicion.cambiarMunicion(municiones.get(municionSeleccionada))
-		game.addVisual(municiones.get(municionSeleccionada))
-
+		position = direccion.proximaPosicion(position)
 	}
-	
-	method chocarContra(objeto)
+
+
+	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-		if (objeto.type() == "asteroide")
+		objetoQueChoca.morir()
+	}
+
+
+   	method dispara() {arma.disparar()}
+
+  	method cambiarMunicion() {arma.cambiarSelector()}
+	
+	method agregarMunicion(cartucho){}
+}
+
+object rifle
+{
+	const cartuchos = [cartuchoDefault,cartuchoGrande]
+	var selectorCartucho = 0
+	
+	
+	method disparar()
+	{
+		const cartuchoQueSeDispara = cartuchos.get(selectorCartucho)
+	
+		if (cartuchoQueSeDispara.tieneBalas())
 		{
-			self.bajarVida(objeto.danio())
+		cartuchoQueSeDispara.consumirBala()
+		self.lanzarProjectil(cartuchoQueSeDispara.bala())
 		}
 	}
 	
-	method danio() = carcaza.danio()
-    
-    method vida() = carcaza.vida()
+	//object contadorDeMunicion inherits TextObject{}
 	
-	method image() {
-		return "avion.png"
-	} 
-	method position (){
-		return posicion
-	}
-	
-	method moverHacia(direccion) {
-		posicion = direccion.proximaPosicion(posicion) 
-	}
-	
-	method bajarVida(x) {carcaza.bajarVida(x)}
-	
-	
-	 
-	method dispara(){
-		municiones.get(municionSeleccionada).disparar(self)
-	}
-	
-	method cargarMunicion(tipoDeMunicion,cantidad)
+	method lanzarProjectil(bala)
 	{
-		
+		const balaADisparar = bala.crearTemplateBala()
+		game.addVisual(balaADisparar)
+		configuracion.configurarColision(balaADisparar)
 	}
 	
-	//method dispara(municionElegida){
-		//municionElegida.disparar(self)
-	//}
 	
-	method desplazar(){}
+	method cambiarSelector()
+	{
+	selectorCartucho = (selectorCartucho + 1).rem(cartuchos.size())
+	}
+	
 }
+
+object carcaza
+{
+	var vida = 1
+	method reducirVida(cuanto)
+    { 
+		vida  -= cuanto
+        if(vida <= 0) configuracion.gameOver()
+    }
+}
+
 
 
 

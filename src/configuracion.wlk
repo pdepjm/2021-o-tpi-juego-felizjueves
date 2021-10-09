@@ -1,22 +1,27 @@
-import avion.*
 import wollok.game.*
+import objetoGenerico.*
 import direcciones.*
-import objetoVolador.*
+import avion.*
 import balas.*
+import asteroide.*
 
 object configuracion {
 	
 	method configuracionDeJuego(){
 		game.clear()
 		game.addVisual(avion)	
-		game.addVisual(avion.municiones().get(0))
 		game.addVisual(pointTracker)	
-		game.addVisual(contadorDeMunicion)
 		pointTracker.reset()
 		game.boardGround("espacio.png")
+		self.configurarColision(avion)
 		self.configurarTeclas()
-		self.crearLanzadores()
 		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
+		game.onTick(1000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
+	}
+	
+	method configurarColision(objeto)
+	{
+		game.onCollideDo(objeto,{objetoQueChoca => objeto.impactarContra(objetoQueChoca)})
 	}
 
 	method configurarTeclas(){
@@ -35,9 +40,9 @@ object configuracion {
 	{
 		game.clear()
 		game.boardGround("espacio.png")
-		game.addVisual(object { method image() = "comenzar.png" method position() = game.at(2,13)})
-		game.addVisual(object { method image() = "controles.png" method position() = game.at(2,9)})
-		game.addVisual(object { method image() = "salir.png" method position() = game.at(2,5)})
+		game.addVisual(object { method image() = "comenzar.png" method position() = game.at(2,8)})
+		game.addVisual(object { method image() = "controles.png" method position() = game.at(2,5)})
+		game.addVisual(object { method image() = "salir.png" method position() = game.at(2,3)})
 		keyboard.w().onPressDo({self.configuracionDeJuego()})
 		keyboard.q().onPressDo({self.controles()}) 
 		keyboard.s().onPressDo({game.stop()})
@@ -45,7 +50,7 @@ object configuracion {
 	
 	method gameOver()
 	{
-		game.clear()
+		self.mainMenu()
 		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center()})
 	}
 	
@@ -62,11 +67,6 @@ object configuracion {
 	y.chocarContra(x)
 	}
 	
-	method crearLanzadores()
-	{
-		const x = new LanzadorDeAsteroides()
-		game.onTick(1000, "blah",{x.lanzarObjeto()})
-	}
 	
 	method actualizarPosiciones()
 	{
@@ -76,15 +76,8 @@ object configuracion {
 	
 }
 
-class Texto
-{
-	const property danio = 0
-	const property seMueve = false
-	method chocarContra(objeto){}
-}
 
-
-object pointTracker inherits Texto
+object pointTracker inherits TextObject 
 {
 	
 	var property puntajeAcumulado = 0
@@ -93,10 +86,6 @@ object pointTracker inherits Texto
 	{
 		puntajeAcumulado = 0
 	}
-	
-	
-	
-	method chocarContra(objeto){}
 	
 	
 	
@@ -118,26 +107,5 @@ object pointTracker inherits Texto
 }
 
 
-class LanzadorDeObjetos{
-	
-	method lanzarObjeto()
-}
 
-class LanzadorDeAsteroides inherits LanzadorDeObjetos
-{
-	
-	override method lanzarObjeto()
-	{
-		const posicionInicioAleatoria = game.center().up(15).right((-10).randomUpTo(10))
-		const nuevoAsteroide = new Asteroide(vida = 1.randomUpTo(5), posicionObjeto = posicionInicioAleatoria,danio=1)
-		game.addVisual(nuevoAsteroide)
-		nuevoAsteroide.configurar()
-	}
-	
-}
-
-class LanzadorDeCorazones inherits LanzadorDeObjetos
-{
-	
-}
 

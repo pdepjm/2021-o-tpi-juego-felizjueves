@@ -10,8 +10,10 @@ object derecha {
 
 object arriba {
 	method proximaPosicion(posicionActual) = posicionActual.up(1)
+	method movimientoVertical(posicionActual,velocidad) = posicionActual.up(velocidad)
 }
 
 object abajo {
 	method proximaPosicion(posicionActual) = posicionActual.down(1)
 }
+
