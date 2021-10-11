@@ -12,6 +12,11 @@ class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = 
 	const property puntaje 
 	method sinVida() = vida <= 0
 	
+	override method morir()
+	{
+		pointTracker.aumentarPuntaje(self.puntaje())
+		super()
+	}
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
