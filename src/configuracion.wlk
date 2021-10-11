@@ -96,8 +96,7 @@ object pointTracker inherits TextObject
 		puntajeAcumulado = puntajeAcumulado + x
 	}
 	
-	method bajarVida()
-	{}
+	
 	
 	method text() = puntajeAcumulado.toString()
 	

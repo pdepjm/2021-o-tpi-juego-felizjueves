@@ -39,13 +39,7 @@ class Bala inherits MovingObject(tipo  = "Bala", tiposQueChocaContra = ["Asteroi
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-	
 		objetoQueChoca.reducirVida(danio)
-		
-		if (objetoQueChoca.tipo() == "Asteroide" and objetoQueChoca.sinVida()) 
-		{
-		pointTracker.aumentarPuntaje(objetoQueChoca.puntaje())
-		}
 	}
 }
 

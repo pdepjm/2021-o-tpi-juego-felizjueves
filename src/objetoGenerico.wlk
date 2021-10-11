@@ -13,6 +13,9 @@ class GenericObject
 	const tiposQueChocaContra 
 	const property image
 	var property position
+	
+	
+	method seMueve()
 
 	method impactarContra(objeto)
 	{
@@ -22,7 +25,7 @@ class GenericObject
 
 	method aplicarEfectoSobre(objeto)
 
-	method morir() { game.schedule(100,{game.removeVisual(self)})}
+	method morir() { game.schedule(200,{game.removeVisual(self)})}
 	
 	method puedeChocarContra(objeto) = tiposQueChocaContra.contains(objeto.tipo()) 
 }
@@ -32,11 +35,12 @@ class MovingObject inherits GenericObject
 {
 	const velocidad
 	
-	method seMueve() = true
+	override method seMueve() = true
 	
 	method desplazar() 
 	{
 	position = arriba.movimientoVertical(self.position(),velocidad)
+	if(position.y().abs() > (game.height() + 1)) game.removeVisual(self)
 	}
 
 }
