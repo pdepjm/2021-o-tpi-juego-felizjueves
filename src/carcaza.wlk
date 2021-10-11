@@ -1,6 +1,5 @@
 import wollok.game.*
 import avion.*
-import objetoVolador.*
 import configuracion.*
 
 	
