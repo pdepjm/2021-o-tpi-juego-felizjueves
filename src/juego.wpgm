@@ -10,4 +10,4 @@ program juego {
 	game.start()
 }
  
- //
+ ///
