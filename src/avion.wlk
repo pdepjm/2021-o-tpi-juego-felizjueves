@@ -38,7 +38,7 @@ object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Aste
 object rifle
 {
 	const cartuchos = [cartuchoDefault,cartuchoGrande]
-	var selectorCartucho = 0
+	var property selectorCartucho = 0
 	
 	
 	method disparar()
@@ -67,6 +67,7 @@ object rifle
 	selectorCartucho = (selectorCartucho + 1).rem(cartuchos.size())
 	}
 	
+	method cartuchos() = cartuchos
 }
 
 object carcaza
@@ -77,6 +78,8 @@ object carcaza
 		vida  -= cuanto
         if(vida <= 0) configuracion.gameOver()
     }
+    
+    method vida() = vida
 }
 
 
