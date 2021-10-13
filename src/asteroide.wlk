@@ -10,6 +10,7 @@ class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = 
 	const danio
 	var vida
 	const property puntaje 
+	
 	method sinVida() = vida <= 0
 	
 	override method morir()
@@ -28,6 +29,8 @@ class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = 
 	vida -= _danio
 	if (self.sinVida()) self.morir()
 	}
+	
+	method vida() = vida
 
 }
 
