@@ -32,7 +32,11 @@ object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Aste
 
   	method cambiarMunicion() {arma.cambiarSelector()}
 	
-	method agregarMunicion(cartucho){}
+	method agregarProvision(provision){
+		if (provision.tipo() == "vida") carcaza.agregarVida(provision)
+		if (provision.tipo() == "municion") arma.agregar(provision)
+	}
+	
 }
 
 object rifle
@@ -68,6 +72,13 @@ object rifle
 	}
 	
 	method cartuchos() = cartuchos
+	
+	method agregarMunicionDe(cartucho)
+	{
+		
+	}
+	
+	method cartuchoEnRifle(cartucho) = cartuchos.any({x=>x.esCompatibleCon(cartucho)})
 }
 
 object carcaza
@@ -80,6 +91,9 @@ object carcaza
     }
     
     method vida() = vida
+method agregarVida(provisionVida) {
+	vida = (vida + provisionVida.cantidad()).min(5)
+}
 }
 
 

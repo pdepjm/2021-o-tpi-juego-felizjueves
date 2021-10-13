@@ -34,7 +34,8 @@ class GenericObject
 class MovingObject inherits GenericObject
 {
 	const velocidad
-	
+	var property vida
+	method sinVida() = vida <= 0
 	override method seMueve() = true
 	
 	method desplazar() 

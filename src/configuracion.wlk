@@ -17,6 +17,7 @@ object configuracion {
 		self.configurarTeclas()
 		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
 		game.onTick(1000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
+		game.errorReporter(errorReporter)
 	}
 	
 	method configurarColision(objeto)
@@ -61,12 +62,6 @@ object configuracion {
 		keyboard.w().onPressDo({self.mainMenu()})
 	}
 	
-	method impacto(x,y)
-	{
-	x.chocarContra(y)
-	y.chocarContra(x)
-	}
-	
 	
 	method actualizarPosiciones()
 	{
@@ -74,6 +69,12 @@ object configuracion {
 	}
 	
 	
+}
+
+object errorReporter
+{
+	var property position = game.at(game.width() + 10, game.height() + 10)
+	var property image = "pepita.png"
 }
 
 

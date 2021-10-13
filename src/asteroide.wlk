@@ -8,9 +8,9 @@ import balas.*
 class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = ["Bala","Avion"])
 {
 	const danio
-	var vida
+	
 	const property puntaje 
-	method sinVida() = vida <= 0
+	
 	
 	override method morir()
 	{
