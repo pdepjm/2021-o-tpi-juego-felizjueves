@@ -4,6 +4,7 @@ import direcciones.*
 import avion.*
 import balas.*
 import asteroide.*
+import lanzadores.*
 
 object configuracion {
 	
@@ -48,6 +49,8 @@ object configuracion {
 		keyboard.q().onPressDo({self.controles()}) 
 		keyboard.s().onPressDo({game.stop()})
 	} 
+	
+	method randomPos() = game.at(0.randomUpTo(game.width()),game.height())
 	
 	method gameOver()
 	{

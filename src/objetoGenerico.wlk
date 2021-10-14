@@ -1,6 +1,7 @@
 import wollok.game.*
 import configuracion.*
 import direcciones.*
+import asteroide.*
 
 object faltaAgregar
 {
@@ -15,7 +16,9 @@ class GenericObject
 	var property position
 	
 	
-	method seMueve()
+	const property seMueve
+	
+	method seMueve() = seMueve
 
 	method impactarContra(objeto)
 	{
@@ -31,17 +34,22 @@ class GenericObject
 }
 
 
-class MovingObject inherits GenericObject
+class MovingObject inherits GenericObject (seMueve = true)
 {
 	const velocidad
 	var property vida
 	method sinVida() = vida <= 0
-	override method seMueve() = true
 	
 	method desplazar() 
 	{
 	position = arriba.movimientoVertical(self.position(),velocidad)
 	if(position.y().abs() > (game.height() + 1)) game.removeVisual(self)
+	}
+	
+	method reducirVida(_danio)
+	{
+	vida -= _danio
+	if (self.sinVida()) self.morir()
 	}
 
 }
@@ -56,10 +64,7 @@ class TextObject
 
 
 
-object lanzarDeProvisiones
-{
-	
-}
+
 
 
 

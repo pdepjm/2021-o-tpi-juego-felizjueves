@@ -3,13 +3,10 @@ import objetoGenerico.*
 import configuracion.*
 import balas.*
 
-object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Asteroide","Provision"], position = game.at(game.center().x(),0), image = "avion.png")
+object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Asteroide","Provision"], position = game.at(game.center().x(),0), image = "avion.png", seMueve = false)
 {
 	const arma = rifle
 	var armadura = carcaza
-	
-	
-	method seMueve() = false // No se mueve automaticamente
 
  	method reducirVida(cuanto) {
    	
@@ -31,11 +28,13 @@ object avion inherits GenericObject(tipo = "Avion", tiposQueChocaContra = ["Aste
    	method dispara() {arma.disparar()}
 
   	method cambiarMunicion() {arma.cambiarSelector()}
+  	
+  	method agregarVida(x) // Asi como esta no parece tener mucho sentido pero esta armado con la idea de que habria muchas carcazas y por ahi algun efecto adicional.
+  	{
+  		carcaza.agregarVida(x)
+  	}
 	
-	method agregarProvision(provision){
-		if (provision.tipo() == "vida") carcaza.agregarVida(provision)
-		if (provision.tipo() == "municion") arma.agregar(provision)
-	}
+	
 	
 }
 
@@ -73,13 +72,10 @@ object rifle
 	
 	method cartuchos() = cartuchos
 	
-	method agregarMunicionDe(cartucho)
-	{
-		
-	}
+	method agregar(cartucho)
+	{}
 	
-	method cartuchoEnRifle(cartucho) = cartuchos.any({x=>x.esCompatibleCon(cartucho)})
-}
+	}
 
 object carcaza
 {
@@ -94,6 +90,18 @@ object carcaza
 method agregarVida(provisionVida) {
 	vida = (vida + provisionVida.cantidad()).min(5)
 }
+}
+
+class Vida inherits MovingObject(tiposQueChocaContra = ["Avion", "Bala"], tipo = "Provision", image = "vida.png", velocidad = -1, vida = 1)
+{
+	const property vidaQueCura
+	
+	override method aplicarEfectoSobre(objeto)
+	{
+		avion.agregarVida(vidaQueCura)
+	}
+	
+	
 }
 
 
