@@ -31,11 +31,23 @@ Polimorfismo =>
 
 	
  ¿Cuál es el mensaje polimórfico? ¿Qué objetos lo implementan? ¿Qué objeto se aprovecha de ello?
+ 
+ Hay dos casos importantes de uso de polimorfismo:
+ 
+ - Uno es en el movimiento de todos los objetos: Primero les consulta a cada uno si seMueve (mensaje al que todos los objetos deben responder) y despues a aquellos que si los mueve acorde a su velocidad.
+ 
+ - Los templates responden polimorficamente a los lanzadores para crear el objeto en base a los valores que guardan.
 
 
 Colecciones =>
 
 ¿Qué operaciones de colecciones se utilizan? ¿Usaron mensajes con y sin efecto? ¿Para qué?
+
+Tenemos unos lanzadores de objetos que eligen de una tabla de templates para crear las instancias de los asteroides y provisiones aleatoramiente. Es sin efecto, en este caso, ya que es solo consulta.
+
+El avion agrega municion en base a una posicion del rifle, este si tiene efecto ya que el cartucho agarrado se le aumenta la municion que guarda.
+
+Finalmente, para ver si dos objetos pueden colisionar cada uno puede consultar si el objeto en si con el que va a chocar es del tipo compatible. Aca nuevamente es simplemente una consulta.
 
 
 Clases =>
@@ -45,13 +57,31 @@ Usamos varias clases para evitar la repeticion de codigo ya que muchas de nuestr
 
  ¿Dónde o cuándo se instancian los objetos?
  
+<<<<<<< HEAD
+=======
+ En el menu y controles hay algunos objetos de texto que se van instanciando.
+ 
+ Los lanzadores de objetos van instanciando los asteroides y las provisiones que caen de arriba.
+ El avion al disparar instancia un tipo de bala.
+ 
+>>>>>>> branch 'master' of https://github.com/pdepjm/2021-o-tpi-juego-felizjueves.git
 Herencia =>
 
  ¿Entre quiénes y por qué? ¿Qué comportamiento es común y cuál distinto?
+<<<<<<< HEAD
  "GenericObject" es la clase super que comparten la clase "MovingObject" y el objeto "avion". 
  Tanto MovingObject como avion comparten los atributos [tipo-tiposQueChocaContra-image-position] y los metodos [seMueve()-impactarContra()-aplicarEfectoSobre()-morir()-puedeChocarContra()]
  La clase MovingObject contiene ademas el atributo "velocidad" 
  El objeto avion contiene los atributos arma y armadura
+=======
+ "GenericObject" es la clase super que comparten la clase "MovingObject" y el objeto "avion". Generic oiene metodos para impactar contra otros objetos, obtener la posicion, la imagen, su propio tipo y los tipos con los que puede chocar contra (cada clase u objeto que hereda de este tiene su propio listado de tipos con los que puede chocar). 
+ Tanto MovingObject como avion comparten los atributos [tipo-tiposQueChocaContra-image-position] y los metodos [seMueve()-impactarContra()-aplicarEfectoSobre()-morir()-puedeChocarContra()] que vienen de GenericObject. 
+ La clase MovingObject contiene ademas el atributo "velocidad" y el metodo desplazar. Tanto las balas, asteroides y las provisiones heredan de esta clase y utilizan este metodo para moverse automaticamente.
+ Los asteroides tienen un efecto especial al morir - ademas de salir del tablero agregan puntos al avion.
+ El objeto avion contiene los atributos arma y armadura, que son objetos con sus propios metodos.
+ 
+ La herencia ocurre principalmente para evitar la repeticion de logica y ademas estructurar el codigo de manera jerarquica (queda claro quien se tiene que encargarse de que y permite generalizar algo rapido si nos damos cuenta que estamos repitiendo codigo en algun lugar)
+>>>>>>> branch 'master' of https://github.com/pdepjm/2021-o-tpi-juego-felizjueves.git
 
 
 Composición =>

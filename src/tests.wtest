@@ -5,7 +5,10 @@ import direcciones.*
 import balas.*
 import asteroide.*
 import configuracion.*
+<<<<<<< HEAD
 import lanzadores.*
+=======
+>>>>>>> branch 'master' of https://github.com/pdepjm/2021-o-tpi-juego-felizjueves.git
 
 describe "Funcionamiento de movimientos" {
 	method initialize() {
