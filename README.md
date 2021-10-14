@@ -35,6 +35,8 @@ Polimorfismo =>
  Hay dos casos importantes de uso de polimorfismo:
  
  - Uno es en el movimiento de todos los objetos: Primero les consulta a cada uno si seMueve (mensaje al que todos los objetos deben responder) y despues a aquellos que si los mueve acorde a su velocidad.
+ 
+ - Los templates responden polimorficamente a los lanzadores para crear el objeto en base a los valores que guardan.
 
 
 Colecciones =>
