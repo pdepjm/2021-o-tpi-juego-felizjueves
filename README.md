@@ -45,7 +45,7 @@ Colecciones =>
 
 Tenemos unos lanzadores de objetos que eligen de una tabla de templates para crear las instancias de los asteroides y provisiones aleatoramiente. Es sin efecto, en este caso, ya que es solo consulta.
 
-El avion agrega municion enviando a cada cartucho que tiene dentro del rifle un mensaje para consultarle si es compatible con el tipo de bala que se va a disparar. En este caso siempre hay un efecto, ya que algun cartucho esta garantizado cargarse por diseño.
+El avion agrega municion en base a una posicion del rifle, este si tiene efecto ya que el cartucho agarrado se le aumenta la municion que guarda.
 
 Finalmente, para ver si dos objetos pueden colisionar cada uno puede consultar si el objeto en si con el que va a chocar es del tipo compatible. Aca nuevamente es simplemente una consulta.
 
