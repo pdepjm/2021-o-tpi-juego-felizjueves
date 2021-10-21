@@ -5,26 +5,36 @@ import avion.*
 import balas.*
 import asteroide.*
 import lanzadores.*
+import MutablePosition.*
+import sonidos.*
 
 object configuracion {
 	
+	const property mainTheme = new Sonido(sonido = "mainTheme.mp3")
+
+	
 	method configuracionDeJuego(){
 		game.clear()
+		mainTheme.playSound()
+		game.addVisual(background)
 		game.addVisual(avion)	
+		game.addVisual(ammoTracker)
+		game.addVisual(vidaTracker)
 		game.addVisual(pointTracker)	
 		pointTracker.reset()
-		game.boardGround("espacio.png")
 		self.configurarColision(avion)
 		self.configurarTeclas()
 		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
 		game.onTick(1000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
-		game.errorReporter(errorReporter)
+		game.onTick(9000, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 	}
 	
 	method configurarColision(objeto)
 	{
 		game.onCollideDo(objeto,{objetoQueChoca => objeto.impactarContra(objetoQueChoca)})
 	}
+	
+	
 
 	method configurarTeclas(){
 		keyboard.left().onPressDo({avion.moverHacia(izquierda) })
@@ -33,35 +43,39 @@ object configuracion {
 		keyboard.down().onPressDo({avion.moverHacia(abajo) })
 		keyboard.space().onPressDo({avion.dispara()})
 		keyboard.q().onPressDo({avion.cambiarMunicion()})
+		keyboard.r().onPressDo({avion.usarHabilidad()})
+		keyboard.k().onPressDo({self.gameOver()})
 		//keyboard.z().onPressDo({avion.dispara(balaTriple)})
 		//keyboard.x().onPressDo({avion.dispara(balaChica)})
+	}
+	
+	method reventarTodo()
+	{
+		game.allVisuals().filter({x => x.collider() == asteroideCollider}).forEach({x => game.removeVisual(x)})
 	}
 	
 
 	method mainMenu()
 	{
 		game.clear()
-		game.boardGround("espacio.png")
-		game.addVisual(object { method image() = "comenzar.png" method position() = game.at(2,8)})
-		game.addVisual(object { method image() = "controles.png" method position() = game.at(2,5)})
-		game.addVisual(object { method image() = "salir.png" method position() = game.at(2,3)})
+	    game.boardGround("menu.png")
 		keyboard.w().onPressDo({self.configuracionDeJuego()})
 		keyboard.q().onPressDo({self.controles()}) 
 		keyboard.s().onPressDo({game.stop()})
 	} 
 	
-	method randomPos() = game.at(0.randomUpTo(game.width()),game.height())
+	method randomPos() = new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
 	
 	method gameOver()
 	{
+		mainTheme.volume(0)
 		self.mainMenu()
-		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center()})
+		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
 	}
 	
 	method controles(){
 		game.clear()
-		game.boardGround("espacio.png")
-		game.addVisual(object { method image() = "controles.png" method position() = game.center()})
+		game.addVisual(object { method image() = "controles.png" method position() = game.origin()})
 		keyboard.w().onPressDo({self.mainMenu()})
 	}
 	
@@ -76,7 +90,7 @@ object configuracion {
 
 object errorReporter
 {
-	var property position = game.at(game.width() + 10, game.height() + 10)
+	var property position = new MutablePosition(x = game.width() + 10, y = game.height() + 10)
 	var property image = "pepita.png"
 }
 
@@ -93,7 +107,7 @@ object pointTracker inherits TextObject
 	
 	
 	
-	method position() = game.at(20,20)
+	method position() = new MutablePosition(x = 20,y = 20)
 	
 	method aumentarPuntaje(x)
 	{
@@ -109,6 +123,14 @@ object pointTracker inherits TextObject
 	
 }
 
+class BackgroundElement inherits TextObject{
+	const property image
+	const property position = game.origin()
+}
+
+object background inherits BackgroundElement(image = "espacio.png",position = game.origin())
+{
+}
 
 
 

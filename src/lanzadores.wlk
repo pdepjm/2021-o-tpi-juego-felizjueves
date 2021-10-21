@@ -2,11 +2,14 @@ import configuracion.*
 import wollok.game.*
 import asteroide.*
 import avion.*
+import balas.*
 
 class TemplateMunicion
 {
-	const tipoMunnicion
+	
+	const cartucho
 	const cantidad
+	method crearTemplate() = new Municion(cartucho = cartucho, cantidadDeBalas = cantidad, position =  configuracion.randomPos())
 	
 }
 
@@ -28,6 +31,14 @@ class TemplateAsteroide
 	method crearTemplate() = new Asteroide(danio = danio, vida = vida, puntaje = puntaje, velocidad = velocidad, image = imagen, position = configuracion.randomPos())
 }
 
+class TemplateArmadura
+{
+	const property armor
+	
+	
+	method crearTemplate() = new ArmaduraAgarrable(armadura = armor, image = "shipTemplate.png", position = configuracion.randomPos())
+}
+
 
 
 class Lanzador
@@ -46,7 +57,6 @@ object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAst
 							new TemplateAsteroide(danio =1, imagen = "asteroideGrande.png", velocidad = -0.1, puntaje = 300,vida = 3)])
 {}
 
-object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [])
-{
-	
-}
+object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new TemplateVida(vida = 1), new TemplateVida(vida = 3), new TemplateMunicion(cartucho = cartuchoDefault,cantidad = 10), new TemplateMunicion(cartucho = cartuchoGrande, cantidad = 5), new TemplateMunicion(cartucho = cartuchoMediano,cantidad = 4), new TemplateArmadura(armor = carcazaInfinita), new TemplateArmadura(armor = carcazaNormal), new TemplateArmadura(armor = carcazaDeMuniciones)])
+{}
+

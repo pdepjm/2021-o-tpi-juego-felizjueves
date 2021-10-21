@@ -2,6 +2,8 @@ import wollok.game.*
 import configuracion.*
 import direcciones.*
 import asteroide.*
+import avion.*
+import MutablePosition.*
 
 object faltaAgregar
 {
@@ -10,40 +12,53 @@ object faltaAgregar
 
 class GenericObject
 {
-	const property tipo
-	const tiposQueChocaContra 
 	const property image
+	const property collider
 	var property position
 	
-	
-	const property seMueve
-	
-	method seMueve() = seMueve
+	method seMueve()
 
 	method impactarContra(objeto)
 	{
-		if (self.puedeChocarContra(objeto)) objeto.aplicarEfectoSobre(self)
+		if (objeto.chocaContra(collider)) self.aplicarEfectoSobre(objeto)
 	}
-	
 
 	method aplicarEfectoSobre(objeto)
 
-	method morir() { game.schedule(200,{game.removeVisual(self)})}
+	method morir() { game.schedule(150,{game.removeVisual(self)})}
 	
-	method puedeChocarContra(objeto) = tiposQueChocaContra.contains(objeto.tipo()) 
+	method chocaContra(unCollider) = collider.chocaContra(unCollider) 
+	
 }
 
+class Collider
+{
+	const listColliders = []
+	
+	method chocaContra(colisionador) = listColliders.contains(colisionador)
+}
 
-class MovingObject inherits GenericObject (seMueve = true)
+object asteroideCollider inherits Collider(listColliders = [avionCollider,balaCollider]){}
+
+object avionCollider inherits Collider(listColliders = [asteroideCollider,provisionCollider]){}
+
+object provisionCollider inherits Collider(listColliders = [avionCollider,balaCollider]){}
+
+object balaCollider inherits Collider(listColliders = [asteroideCollider]){}
+
+
+class MovingObject inherits GenericObject 
 {
 	const velocidad
 	var property vida
 	method sinVida() = vida <= 0
 	
+	override method seMueve() = true
+	
 	method desplazar() 
 	{
-	position = arriba.movimientoVertical(self.position(),velocidad)
-	if(position.y().abs() > (game.height() + 1)) game.removeVisual(self)
+     arriba.movimientoVertical(self.position(),velocidad)
+	if(position.y().abs() > (game.height() + 1) or position.y() < -1) game.removeVisual(self)
 	}
 	
 	method reducirVida(_danio)
@@ -51,15 +66,27 @@ class MovingObject inherits GenericObject (seMueve = true)
 	vida -= _danio
 	if (self.sinVida()) self.morir()
 	}
-
+   override method chocaContra(unCollider) = super(unCollider) and not self.sinVida()
 }
+
+object ammoTracker inherits TextObject
+{
+	method position() = avion.position().up(-1)
+	method text() = "Ammo: " + avion.municionActual().toString()
+}
+object vidaTracker inherits TextObject
+{
+	method position() = avion.position().up(1)
+	method text() = "Vida: " + avion.vida().toString()
+}
+
 
 class TextObject 
 {
+	var property collider = new Collider()
 	const property tipo = "Texto"
-    method puedeChocarContra(objeto) = false
+    method chocaContra(objeto) = false
     method seMueve() = false
-
 }
 
 

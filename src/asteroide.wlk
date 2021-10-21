@@ -3,16 +3,15 @@ import objetoGenerico.*
 import configuracion.*
 import avion.*
 import balas.*
+import sonidos.*
 
 
-class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = ["Bala","Avion"])
+class Asteroide inherits MovingObject(collider = asteroideCollider)
 {
 	const danio
+	const sonido = new Sonido(sonido = "asteroidHit.wav")
 	
 	const property puntaje 
-
-	
-	method sinVida() = vida <= 0
 
 	override method morir()
 	{
@@ -22,6 +21,7 @@ class Asteroide inherits MovingObject(tipo = "Asteroide", tiposQueChocaContra = 
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
+		sonido.playSound()
 		objetoQueChoca.reducirVida(danio)
 	}
 	
