@@ -1,9 +1,10 @@
 import wollok.game.*
+import MutablePosition.*
 
  class Animation
  {
  	const animationImages = []
- 	var property position
+ 	var property position = new MutablePosition()
  	const frameRate
  	var frame = 0
  	
@@ -31,7 +32,7 @@ import wollok.game.*
  	
  	method runAnimation(_position, lengthOfAnimation)
  	{
- 	position = 	_position
+ 	position.goTo(_position)
  	game.addVisual(self)
  	self.createAnimation(lengthOfAnimation)
  	}

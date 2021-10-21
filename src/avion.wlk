@@ -26,8 +26,9 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    
    method reset()
    {
-   	position = new MutablePosition( x= game.center().x(),y =0)
-   	arma = rifle
+   	position.x(game.center().x())
+   	position.y(game.center().y())
+   	rifle.reset()
    	armadura = carcazaNormal
    }
    
@@ -81,6 +82,12 @@ object rifle
 	
 	method cantidadDeBalasEnCartuchoActual() = self.cartuchoSeleccionado().cantidadDeBalas()
 	
+	method reset()
+	{
+		selectorCartucho = 0
+		cartuchos.forEach({x => x.reset()})
+	}
+	
 	method disparar()
 	{
 		const cartuchoQueSeDispara = self.cartuchoSeleccionado()
@@ -126,10 +133,17 @@ object rifle
 class Carcaza
 {
 	var vida
+	const vidaDefault
 	const delayHabilidad
 	var puedeUsarHabilidad = true
 	
 	const property image
+	
+	method reset()
+	{
+		vida = vidaDefault
+		puedeUsarHabilidad = true
+	}
 	
 	method reducirVida(cuanto)
     { 
@@ -164,10 +178,11 @@ method activarHabilidad()
 	
 }	
 
-object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilidad = 20)
+object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilidad = 20, vidaDefault = 3)
 {
 	const sound = new Sonido(sonido = "electric.wav")
     const animation = new DynamicAnimation(animationImages = ["elec1.png", "elec2.png", "elec3.png"], frameRate = 90, position = avion.position())
+   
     method resetearVida(x)
     {
     	vida  = x
@@ -184,7 +199,7 @@ object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilid
 	
 }
 
-object carcazaDeMuniciones inherits Carcaza(vida = 2, image = "armaduraMuniciones.png", delayHabilidad = 35)
+object carcazaDeMuniciones inherits Carcaza(vida = 2, image = "armaduraMuniciones.png", delayHabilidad = 35, vidaDefault = 3)
 {
 	override method habilidadEspecial()
 	{
@@ -193,7 +208,7 @@ object carcazaDeMuniciones inherits Carcaza(vida = 2, image = "armaduraMunicione
 	}
 }
 
-object carcazaInfinita inherits Carcaza(vida = 5, image = "armaduraInfinita.png", delayHabilidad = 50)
+object carcazaInfinita inherits Carcaza(vida = 5, image = "armaduraInfinita.png", delayHabilidad = 50, vidaDefault = 5)
 {
 	const soundEffect = new Sonido(sonido = "bigOOF.mp3")
 	

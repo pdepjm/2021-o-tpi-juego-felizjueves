@@ -11,11 +11,15 @@ import sonidos.*
 object configuracion {
 	
 	const property mainTheme = new Sonido(sonido = "mainTheme.mp3")
+	const property gameOverSound = new Sonido(sonido = "gameOver.wav")
 
+	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
 	method configuracionDeJuego(){
 		game.clear()
 		mainTheme.playSound()
+		avion.reset()
+		carcazasDisponibles.forEach({x => x.reset()})
 		game.addVisual(background)
 		game.addVisual(avion)	
 		game.addVisual(ammoTracker)
@@ -69,6 +73,7 @@ object configuracion {
 	method gameOver()
 	{
 		mainTheme.volume(0)
+		gameOverSound.playSound()
 		self.mainMenu()
 		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
 	}

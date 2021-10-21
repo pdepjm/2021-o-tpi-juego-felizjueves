@@ -27,6 +27,12 @@ class MutablePosition {
   method goDown(n){
       y -= n
   }
+  
+  method goTo(position)
+  {
+  	x= position.x()
+  	y = position.y()
+  }
 
   method drawElement(element) { game.addVisualIn(element, self) }
   
