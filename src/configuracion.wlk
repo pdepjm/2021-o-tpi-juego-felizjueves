@@ -10,10 +10,17 @@ import sonidos.*
 
 object configuracion {
 	
-	const property mainTheme = new Sonido(sonido = "mainTheme.mp3")
-	const property gameOverSound = new Sonido(sonido = "gameOver.wav")
-
+	const  mainTheme = new Sonido(sonido = "mainTheme.mp3")
+	const  gameOverSound = new Sonido(sonido = "gameOver.wav")
+	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
+	
+	const property posicionesNoUsadas = []
+	
+	const position = new MutablePosition()
+	
+	method mainTheme() {return mainTheme}
+	method gameOverSound() { return gameOverSound}
 	
 	method configuracionDeJuego(){
 		game.clear()
@@ -31,6 +38,7 @@ object configuracion {
 		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
 		game.onTick(1000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(9000, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
+		game.onTick(3000, "Lanzar provision", {lanzadorDeLaser.disparar()})
 	}
 	
 	method configurarColision(objeto)
@@ -68,8 +76,23 @@ object configuracion {
 		keyboard.s().onPressDo({game.stop()})
 	} 
 	
-	method randomPos() = new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
+	method randomPos() {
+		if (not posicionesNoUsadas.isEmpty())
+		{
+			 const pos = posicionesNoUsadas.last()
+			 posicionesNoUsadas.remove(pos)
+			 pos.goTo(self.giveRandomSeed())
+			 return pos
+		}
+		else return new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
+		}
+		
 	
+	method giveRandomSeed()
+	{
+		position.goToRandom(game.height())
+		return position
+	}
 	method gameOver()
 	{
 		mainTheme.volume(0)

@@ -24,6 +24,8 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    	armadura = armaduraNueva
    }
    
+   method chocaContraLaser(x) = position.xValueIs(x)
+   
    method reset()
    {
    	position.x(game.center().x())
@@ -181,7 +183,7 @@ method activarHabilidad()
 object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilidad = 20, vidaDefault = 3)
 {
 	const sound = new Sonido(sonido = "electric.wav")
-    const animation = new DynamicAnimation(animationImages = ["elec1.png", "elec2.png", "elec3.png"], frameRate = 90, position = avion.position())
+    const animation = new DynamicAnimation(animationImages = ["elec1.png", "elec2.png", "elec3.png"], frameRate = 90)
    
     method resetearVida(x)
     {
@@ -193,7 +195,7 @@ object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilid
 		const vidaActual = vida
 		vida = 100
 		sound.playSound()
-		animation.runAnimation(2000)
+		animation.runAnimation(avion,2000)
 		game.schedule(2000,{self.resetearVida(vidaActual)})
 	}
 	

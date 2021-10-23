@@ -4,9 +4,11 @@ import MutablePosition.*
  class Animation
  {
  	const animationImages = []
- 	var property position = new MutablePosition()
  	const frameRate
  	var frame = 0
+ 	var position = null
+ 	
+ 	method position() = position
  	
  	method chocaContra(x) = false
  	method seMueve() = false
@@ -27,8 +29,9 @@ import MutablePosition.*
  }
  
  
- class StaticAnimation inherits Animation
+ class StaticAnimation inherits Animation (position = new MutablePosition())
  {
+
  	
  	method runAnimation(_position, lengthOfAnimation)
  	{
@@ -41,8 +44,9 @@ import MutablePosition.*
  
  class DynamicAnimation inherits Animation
  {
-    method runAnimation(lengthOfAnimation)
+    method runAnimation(objectA,lengthOfAnimation)
  	{
+ 	position = objectA.position()
  	game.addVisual(self)
  	self.createAnimation(lengthOfAnimation)
  	}

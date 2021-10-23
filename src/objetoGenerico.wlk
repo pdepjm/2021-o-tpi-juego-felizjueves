@@ -25,7 +25,10 @@ class GenericObject
 
 	method aplicarEfectoSobre(objeto)
 
-	method morir() { game.schedule(150,{game.removeVisual(self)})}
+	method morir() {
+		game.schedule(150,{game.removeVisual(self)})
+		game.schedule(160,{configuracion.posicionesNoUsadas().add(self.position())})
+	}
 	
 	method chocaContra(unCollider) = collider.chocaContra(unCollider) 
 	

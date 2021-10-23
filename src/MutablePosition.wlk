@@ -33,7 +33,16 @@ class MutablePosition {
   	x= position.x()
   	y = position.y()
   }
+  
+  method goTo(_x,_y)
+  {
+  	x = _x
+  	y = _y
+  }
 
+ method xValueIs(_x) = x == _x
+ method yValueIs(_y) = y == _y
+  
   method drawElement(element) { game.addVisualIn(element, self) }
   
   method drawCharacter(element) { game.addVisualCharacterIn(element, self) }
@@ -49,6 +58,11 @@ class MutablePosition {
     const deltaX = x - position.x()
     const deltaY = y - position.y()
     return (deltaX.square() + deltaY.square()).squareRoot() 
+  }
+  
+  method goToRandom(height)
+  {
+  	self.goTo(0.randomUpTo(game.width()),height)
   }
 
   method clear() {

@@ -3,6 +3,9 @@ import wollok.game.*
 import asteroide.*
 import avion.*
 import balas.*
+import animations.*
+import sonidos.*
+import MutablePosition.*
 
 class TemplateMunicion
 {
@@ -46,9 +49,9 @@ class Lanzador
 	const listaDeTemplates
 	method lanzar()
 	{
-		const asteroideElegido = listaDeTemplates.anyOne().crearTemplate()
-		game.addVisual(asteroideElegido)
-		configuracion.configurarColision(asteroideElegido)
+		const objt = listaDeTemplates.anyOne().crearTemplate()
+		game.addVisual(objt)
+		configuracion.configurarColision(objt)
 	}
 }
 
@@ -59,4 +62,22 @@ object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAst
 
 object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new TemplateVida(vida = 1), new TemplateVida(vida = 3), new TemplateMunicion(cartucho = cartuchoDefault,cantidad = 10), new TemplateMunicion(cartucho = cartuchoGrande, cantidad = 5), new TemplateMunicion(cartucho = cartuchoMediano,cantidad = 4), new TemplateArmadura(armor = carcazaInfinita), new TemplateArmadura(armor = carcazaNormal), new TemplateArmadura(armor = carcazaDeMuniciones)])
 {}
+
+object lanzadorDeLaser
+{
+	const laserAnimation = new StaticAnimation(frameRate = 70, animationImages = ["laser1.png", "laser2.png", "laser3.png","laser2.png","laser1.png"])
+	const laserSound = new Sonido(sonido = "laser.wav")
+	const position = new MutablePosition()
+	
+	method disparar()
+	{
+		position.goToRandom(-1)
+		laserSound.playSound()
+		laserAnimation.runAnimation(position,350)
+		if(avion.chocaContraLaser(position.x()))
+		{
+			avion.reducirVida(2)
+		}
+	}
+}
 
