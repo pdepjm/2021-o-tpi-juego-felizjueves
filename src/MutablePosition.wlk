@@ -3,6 +3,8 @@ import wollok.game.*
 class MutablePosition {
   var property x = 0
   var property y = 0
+  
+  
     
   method right(n) = new MutablePosition(x = x + n, y = y)
      

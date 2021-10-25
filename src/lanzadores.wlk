@@ -55,9 +55,9 @@ class Lanzador
 	}
 }
 
-object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.3, puntaje = 100,vida = 1),
-							new TemplateAsteroide(danio =1, imagen = "asteroideMediano.png", velocidad = -0.2, puntaje = 200,vida = 2),
-							new TemplateAsteroide(danio =1, imagen = "asteroideGrande.png", velocidad = -0.1, puntaje = 300,vida = 3)])
+object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.6, puntaje = 100,vida = 1),
+							new TemplateAsteroide(danio =1, imagen = "asteroideMediano.png", velocidad = -0.4, puntaje = 200,vida = 2),
+							new TemplateAsteroide(danio =1, imagen = "asteroideGrande.png", velocidad = -0.3, puntaje = 300,vida = 3)])
 {}
 
 object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new TemplateVida(vida = 1), new TemplateVida(vida = 3), new TemplateMunicion(cartucho = cartuchoDefault,cantidad = 10), new TemplateMunicion(cartucho = cartuchoGrande, cantidad = 5), new TemplateMunicion(cartucho = cartuchoMediano,cantidad = 4), new TemplateArmadura(armor = carcazaInfinita), new TemplateArmadura(armor = carcazaNormal), new TemplateArmadura(armor = carcazaDeMuniciones)])
@@ -66,12 +66,22 @@ object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new Template
 object lanzadorDeLaser
 {
 	const laserAnimation = new StaticAnimation(frameRate = 70, animationImages = ["laser1.png", "laser2.png", "laser3.png","laser2.png","laser1.png"])
+    const warningAnimation = new StaticAnimation(frameRate = 50, animationImages = ["warning.png","warning1.png","warning2.png","warning3.png","warning2.png","warning1.png"])
 	const laserSound = new Sonido(sonido = "laser.wav")
+	const warningSound = new Sonido(sonido = "warning.wav")
 	const position = new MutablePosition()
 	
-	method disparar()
+	method disparar1()
 	{
-		position.goToRandom(-1)
+		position.goToRandom(game.height() - 1)
+		warningAnimation.runAnimation(position,900)
+		warningSound.playSound()
+		game.schedule(900,{self.disparar2()})
+	}
+	
+	method disparar2()
+	{
+		position.goDown(game.height())
 		laserSound.playSound()
 		laserAnimation.runAnimation(position,350)
 		if(avion.chocaContraLaser(position.x()))

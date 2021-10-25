@@ -36,7 +36,11 @@ class TemplateBala
 	const property imagen
 	const property velocidad
 	const property efectoDisparo
-	method crearTemplateBala() = new Bala(velocidad = self.velocidad(), image = self.imagen(), position = new MutablePosition(x = avion.position().x(), y = avion.position().y()), danio = self.danio(),vida = 1, collider = balaCollider,soundEffect = efectoDisparo)
+	
+
+	
+	method crearTemplateBala() = new Bala(velocidad = self.velocidad(), image = self.imagen(), position = configuracion.crearPositionBala(), danio = self.danio(),vida = 1, collider = balaCollider,soundEffect = efectoDisparo)
+	
 	
 }
 
@@ -57,6 +61,12 @@ class Bala inherits MovingObject(collider = balaCollider,vida = 1)
 	method shootSound()
 	{
 		soundEffect.playSound()
+	}
+	
+	override method morir()
+	{
+		game.schedule(150,{game.removeVisual(self)})
+		game.schedule(160,{configuracion.listaPosicionesDeBala().add(self.position())})
 	}
 }
 

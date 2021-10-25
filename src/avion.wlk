@@ -24,7 +24,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    	armadura = armaduraNueva
    }
    
-   method chocaContraLaser(x) = position.xValueIs(x)
+   method chocaContraLaser(x) = (position.x() - x).abs() < 1
    
    method reset()
    {

@@ -7,6 +7,7 @@ import MutablePosition.*
  	const frameRate
  	var frame = 0
  	var position = null
+ 	method collider() = null
  	
  	method position() = position
  	

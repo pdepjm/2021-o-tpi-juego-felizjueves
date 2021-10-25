@@ -1,3 +1,4 @@
+/* 
 import soundProducer.*
 import wollok.game.*
 import avion.*
@@ -103,3 +104,4 @@ describe "Asteroides"{
 		
 	}
 }
+* */

@@ -5,7 +5,7 @@ program juego {
 	game.title("1942")
 	game.cellSize(50)
 	game.height(15) 
-	game.width(20)
+	game.width(20) 
 	configuracion.mainMenu()
 	game.start()
 }

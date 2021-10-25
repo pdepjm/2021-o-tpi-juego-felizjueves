@@ -15,7 +15,8 @@ object configuracion {
 	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
-	const property posicionesNoUsadas = []
+	const property posicionesNoUsadas = #{}
+	const property listaPosicionesDeBala= #{}
 	
 	const position = new MutablePosition()
 	
@@ -35,10 +36,10 @@ object configuracion {
 		pointTracker.reset()
 		self.configurarColision(avion)
 		self.configurarTeclas()
-		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
-		game.onTick(1000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
+		game.onTick(50,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
+		game.onTick(2000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(9000, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
-		game.onTick(3000, "Lanzar provision", {lanzadorDeLaser.disparar()})
+		game.onTick(3000, "Lanzar provision", {lanzadorDeLaser.disparar1()})
 	}
 	
 	method configurarColision(objeto)
@@ -57,6 +58,7 @@ object configuracion {
 		keyboard.q().onPressDo({avion.cambiarMunicion()})
 		keyboard.r().onPressDo({avion.usarHabilidad()})
 		keyboard.k().onPressDo({self.gameOver()})
+		keyboard.y().onPressDo({self.reventarTodo()})
 		//keyboard.z().onPressDo({avion.dispara(balaTriple)})
 		//keyboard.x().onPressDo({avion.dispara(balaChica)})
 	}
@@ -79,7 +81,7 @@ object configuracion {
 	method randomPos() {
 		if (not posicionesNoUsadas.isEmpty())
 		{
-			 const pos = posicionesNoUsadas.last()
+			 const pos = posicionesNoUsadas.anyOne()
 			 posicionesNoUsadas.remove(pos)
 			 pos.goTo(self.giveRandomSeed())
 			 return pos
@@ -92,6 +94,19 @@ object configuracion {
 	{
 		position.goToRandom(game.height())
 		return position
+	}
+	
+	method crearPositionBala()// todo: reutilizar codigo del metodo de arriba que es casi lo mismo
+	{
+		if (not listaPosicionesDeBala.isEmpty())
+		{
+			const x = listaPosicionesDeBala.anyOne()
+			listaPosicionesDeBala.remove(x)
+			x.goTo(avion.position().x(), avion.position().y())
+			return x
+		}
+		else return new MutablePosition(x = avion.position().x(), y = avion.position().y())
+	
 	}
 	method gameOver()
 	{
