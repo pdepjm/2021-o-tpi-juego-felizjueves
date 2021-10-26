@@ -34,34 +34,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>assets/armaduraInfinita.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/armaduraInfinita.png</locationURI>
-		</link>
-		<link>
-			<name>assets/armaduraMuniciones.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/armaduraMuniciones.png</locationURI>
-		</link>
-		<link>
 			<name>assets/mainTheme.mp3</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Desktop/mainTheme.mp3</locationURI>
-		</link>
-		<link>
-			<name>assets/municion.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/municion.png</locationURI>
-		</link>
-		<link>
-			<name>assets/shipTemplate.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/shipTemplate.png</locationURI>
-		</link>
-		<link>
-			<name>assets/vida.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/vida.png</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

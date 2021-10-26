@@ -1,5 +1,5 @@
 import wollok.game.*
-import objetoGenerico.*
+import objectsAndColliders.*
 import direcciones.*
 import avion.*
 import balas.*
@@ -7,6 +7,7 @@ import asteroide.*
 import lanzadores.*
 import MutablePosition.*
 import sonidos.*
+import carcazas.*
 
 object configuracion {
 	
@@ -15,8 +16,7 @@ object configuracion {
 	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
-	const property posicionesNoUsadas = #{}
-	const property listaPosicionesDeBala= #{}
+	const property posicionesNoUsadas = []
 	
 	const position = new MutablePosition()
 	
@@ -25,7 +25,7 @@ object configuracion {
 	
 	method configuracionDeJuego(){
 		game.clear()
-		mainTheme.playSound()
+		mainTheme.play(50)
 		avion.reset()
 		carcazasDisponibles.forEach({x => x.reset()})
 		game.addVisual(background)
@@ -36,7 +36,7 @@ object configuracion {
 		pointTracker.reset()
 		self.configurarColision(avion)
 		self.configurarTeclas()
-		game.onTick(50,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
+		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
 		game.onTick(2000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(9000, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 		game.onTick(3000, "Lanzar provision", {lanzadorDeLaser.disparar1()})
@@ -58,12 +58,12 @@ object configuracion {
 		keyboard.q().onPressDo({avion.cambiarMunicion()})
 		keyboard.r().onPressDo({avion.usarHabilidad()})
 		keyboard.k().onPressDo({self.gameOver()})
-		keyboard.y().onPressDo({self.reventarTodo()})
+		keyboard.y().onPressDo({self.reventarAsteroides()})
 		//keyboard.z().onPressDo({avion.dispara(balaTriple)})
 		//keyboard.x().onPressDo({avion.dispara(balaChica)})
 	}
 	
-	method reventarTodo()
+	method reventarAsteroides()
 	{
 		game.allVisuals().filter({x => x.collider() == asteroideCollider}).forEach({x => game.removeVisual(x)})
 	}
@@ -96,22 +96,17 @@ object configuracion {
 		return position
 	}
 	
-	method crearPositionBala()// todo: reutilizar codigo del metodo de arriba que es casi lo mismo
+	method crearPositionBala() 
 	{
-		if (not listaPosicionesDeBala.isEmpty())
-		{
-			const x = listaPosicionesDeBala.anyOne()
-			listaPosicionesDeBala.remove(x)
-			x.goTo(avion.position().x(), avion.position().y())
-			return x
-		}
-		else return new MutablePosition(x = avion.position().x(), y = avion.position().y())
-	
+		const z = self.randomPos()
+		z.goTo(avion.position())
+		return z
+	     
 	}
 	method gameOver()
 	{
 		mainTheme.volume(0)
-		gameOverSound.playSound()
+		gameOverSound.play()
 		self.mainMenu()
 		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
 	}
@@ -131,14 +126,8 @@ object configuracion {
 	
 }
 
-object errorReporter
-{
-	var property position = new MutablePosition(x = game.width() + 10, y = game.height() + 10)
-	var property image = "pepita.png"
-}
 
-
-object pointTracker inherits TextObject 
+object pointTracker inherits TextObject (position = new MutablePosition(x = 20,y = 20))
 {
 	
 	var property puntajeAcumulado = 0
@@ -148,16 +137,10 @@ object pointTracker inherits TextObject
 		puntajeAcumulado = 0
 	}
 	
-	
-	
-	method position() = new MutablePosition(x = 20,y = 20)
-	
 	method aumentarPuntaje(x)
 	{
 		puntajeAcumulado = puntajeAcumulado + x
 	}
-	
-	
 	
 	method text() = puntajeAcumulado.toString()
 	
@@ -166,12 +149,11 @@ object pointTracker inherits TextObject
 	
 }
 
-class BackgroundElement inherits TextObject{
-	const property image
-	const property position = game.origin()
+class BackgroundElement inherits TextObject (position = new MutablePosition(x= 0, y= 0)){
+const property image
 }
 
-object background inherits BackgroundElement(image = "espacio.png",position = game.origin())
+object background inherits BackgroundElement(image = "espacio.png",position = new MutablePosition(x= 0, y= 0))
 {
 }
 

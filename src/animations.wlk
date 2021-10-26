@@ -1,19 +1,13 @@
 import wollok.game.*
 import MutablePosition.*
+import objectsAndColliders.*
 
- class Animation
+
+ class Animation inherits TextObject(position = new MutablePosition())
  {
- 	const animationImages = []
- 	const frameRate
+ 	const animationImages = [] // Imagenes que se utilizan al momento de correr la animacion/
+ 	const frameRate // Medio falso el nombre, en verdad es el tiempo en millisegundos hasta el siguiente frame.
  	var frame = 0
- 	var position = null
- 	method collider() = null
- 	
- 	method position() = position
- 	
- 	method chocaContra(x) = false
- 	method seMueve() = false
- 	
  	method image() =  animationImages.get(frame) 
  	
  	method update(){
@@ -21,7 +15,7 @@ import MutablePosition.*
  		if (frame >= animationImages.size()) frame = 0
  	}
  	
- 	method createAnimation(lengthOfAnimation)
+ 	method createAnimation(lengthOfAnimation) // Crea una animacion que loopea las imagenes que hay en animationImages hasta que se acaba el tiempo.
  	{
  	game.schedule(lengthOfAnimation, {game.removeVisual(self)})
  	game.onTick(frameRate,"nuevo frame",{self.update()})
@@ -30,22 +24,20 @@ import MutablePosition.*
  }
  
  
- class StaticAnimation inherits Animation (position = new MutablePosition())
+ class StaticAnimation inherits Animation 
  {
-
- 	
- 	method runAnimation(_position, lengthOfAnimation)
+ 	method runAnimation(_position, lengthOfAnimation) // las StaticAnimation reciben una posicion y ejecutan la animacion en esa posicion fija.
  	{
  	position.goTo(_position)
  	game.addVisual(self)
  	self.createAnimation(lengthOfAnimation)
  	}
- 	
  }
+ 
  
  class DynamicAnimation inherits Animation
  {
-    method runAnimation(objectA,lengthOfAnimation)
+    method runAnimation(objectA,lengthOfAnimation) // Las dynamicAnimation reciben un objeto y se acoplan a este en la duracion de la animacion
  	{
  	position = objectA.position()
  	game.addVisual(self)

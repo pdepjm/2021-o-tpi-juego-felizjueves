@@ -1,10 +1,12 @@
 import wollok.game.*
-import objetoGenerico.*
+import objectsAndColliders.*
 import configuracion.*
 import balas.*
 import MutablePosition.*
 import animations.*
 import sonidos.*
+import carcazas.*
+import provisiones.*
 
 object avion inherits GenericObject(collider = avionCollider, position = new MutablePosition(x = game.center().x(),y = 0), image=null)
 {
@@ -15,7 +17,6 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
 	
 
  	method reducirVida(cuanto) {
-   	
    	armadura.reducirVida(cuanto)
    }
    
@@ -29,8 +30,10 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    method reset()
    {
    	position.x(game.center().x())
-   	position.y(game.center().y())
+   	position.y(0)
    	rifle.reset()
+   	ammoTracker.reset()
+   	vidaTracker.reset()
    	armadura = carcazaNormal
    }
    
@@ -44,6 +47,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    method moverHacia(direccion)
 	{
 	 direccion.proximaPosicion(position)
+	 ammoTracker.moverHacia(direccion)
 	}
 	
 	method vida() = armadura.vida()
@@ -71,8 +75,6 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
   	
   	method municionActual() = arma.cantidadDeBalasEnCartuchoActual()
 	
-	
-	
 }
 
 object rifle
@@ -89,6 +91,7 @@ object rifle
 		selectorCartucho = 0
 		cartuchos.forEach({x => x.reset()})
 	}
+
 	
 	method disparar()
 	{
@@ -132,129 +135,28 @@ object rifle
 	
 	}
 	
-class Carcaza
-{
-	var vida
-	const vidaDefault
-	const delayHabilidad
-	var puedeUsarHabilidad = true
-	
-	const property image
-	
-	method reset()
-	{
-		vida = vidaDefault
-		puedeUsarHabilidad = true
-	}
-	
-	method reducirVida(cuanto)
-    { 
-		vida  -= cuanto
-        if(vida <= 0) configuracion.gameOver()
-    }
-    
-    method vida() = vida
 
-method agregarVida(provisionVida) {
-	vida = (vida + provisionVida).min(5)
+object ammoTracker inherits TextObject(position = new MutablePosition())
+{
+	method text() = "Ammo: " + avion.municionActual().toString()
+	method reset() 
+	{
+		position.goTo(avion.position())
+		position.goUp(1)
+		}
 }
 
-method permitirHabilidad()
+object vidaTracker inherits TextObject(position =  new MutablePosition())
 {
-	puedeUsarHabilidad = true
-}
-
-method habilidadEspecial()
-
-method activarHabilidad()
-{
-	if (puedeUsarHabilidad)
+	method text() = "Vida: " + avion.vida().toString()
+	
+	method reset() 
 	{
-		self.habilidadEspecial()
-		game.schedule(delayHabilidad * 1000,{self.permitirHabilidad()})
-		puedeUsarHabilidad = false
+	position.goTo(avion.position())
+	position.goDown(1)
 	}
 }
 
-
-	
-}	
-
-object carcazaNormal inherits Carcaza(vida = 3, image = "avion.png",delayHabilidad = 20, vidaDefault = 3)
-{
-	const sound = new Sonido(sonido = "electric.wav")
-    const animation = new DynamicAnimation(animationImages = ["elec1.png", "elec2.png", "elec3.png"], frameRate = 90)
-   
-    method resetearVida(x)
-    {
-    	vida  = x
-    }
-    
-	override method habilidadEspecial()
-	{
-		const vidaActual = vida
-		vida = 100
-		sound.playSound()
-		animation.runAnimation(avion,2000)
-		game.schedule(2000,{self.resetearVida(vidaActual)})
-	}
-	
-}
-
-object carcazaDeMuniciones inherits Carcaza(vida = 2, image = "armaduraMuniciones.png", delayHabilidad = 35, vidaDefault = 3)
-{
-	override method habilidadEspecial()
-	{
-		avion.cargarCartucho(avion.arma().cartuchoSeleccionado(),10)
-		10.times({x => game.schedule(x * x * 10,{avion.dispara()})})
-	}
-}
-
-object carcazaInfinita inherits Carcaza(vida = 5, image = "armaduraInfinita.png", delayHabilidad = 50, vidaDefault = 5)
-{
-	const soundEffect = new Sonido(sonido = "bigOOF.mp3")
-	
-	override method habilidadEspecial()
-	{
-		
-		const firstLayer = new BackgroundElement(image = "firstlayer.png")
-		const secondLayer = new BackgroundElement(image = "secondlayer.png")
-		configuracion.mainTheme().volume(0)
-		soundEffect.playSound()
-		game.schedule(400, {game.addVisual(firstLayer)})
-		game.schedule(900,{game.addVisual(secondLayer)})
-		game.schedule(1700,{game.removeVisual(firstLayer)})
-		game.schedule(1900, {game.removeVisual(secondLayer)})
-		game.schedule(1600, {configuracion.reventarTodo()})
-		game.schedule(2000,{configuracion.mainTheme().volume(0.8)})
-		
-	}
-	
-}
-
-class Vida inherits MovingObject(collider = provisionCollider, image = "vida.png", velocidad = -0.6, vida = 1)
-{
-	const property vidaQueCura
-	const sound = new Sonido(sonido = "recover.wav")
-	
-	override method aplicarEfectoSobre(objeto)
-	{
-		sound.playSound()
-		avion.agregarVida(vidaQueCura)
-	}
-}
-
-class ArmaduraAgarrable inherits MovingObject(collider = provisionCollider, velocidad = -1, vida = 3)
-{
-	const armadura
-	const sound = new Sonido(sonido = "armadura.wav")
-	
-	override method aplicarEfectoSobre(objeto)
-	{
-		sound.playSound()
-		avion.cambiarArmadura(armadura)
-	}
-}
 
 
 

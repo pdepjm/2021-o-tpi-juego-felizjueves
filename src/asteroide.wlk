@@ -1,5 +1,5 @@
 import wollok.game.*
-import objetoGenerico.*
+import objectsAndColliders.*
 import configuracion.*
 import avion.*
 import balas.*
@@ -21,11 +21,9 @@ class Asteroide inherits MovingObject(collider = asteroideCollider)
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-		sonido.playSound()
+		sonido.play()
 		objetoQueChoca.reducirVida(danio)
 	}
-	
-
 }
 
 

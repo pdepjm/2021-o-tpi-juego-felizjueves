@@ -3,9 +3,7 @@ import wollok.game.*
 class MutablePosition {
   var property x = 0
   var property y = 0
-  
-  
-    
+ 
   method right(n) = new MutablePosition(x = x + n, y = y)
      
   method left(n) = new MutablePosition(x = x - n, y = y)
@@ -41,9 +39,6 @@ class MutablePosition {
   	x = _x
   	y = _y
   }
-
- method xValueIs(_x) = x == _x
- method yValueIs(_y) = y == _y
   
   method drawElement(element) { game.addVisualIn(element, self) }
   

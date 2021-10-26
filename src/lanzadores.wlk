@@ -6,43 +6,10 @@ import balas.*
 import animations.*
 import sonidos.*
 import MutablePosition.*
-
-class TemplateMunicion
-{
-	
-	const cartucho
-	const cantidad
-	method crearTemplate() = new Municion(cartucho = cartucho, cantidadDeBalas = cantidad, position =  configuracion.randomPos())
-	
-}
-
-class TemplateVida
-{
-	const property vida
-	
-	method crearTemplate() = new Vida(vidaQueCura = 1, position = configuracion.randomPos())
-}
-
-class TemplateAsteroide
-{
-	const property danio
-	const property imagen
-	const property velocidad
-	const property puntaje
-	const vida 
-	
-	method crearTemplate() = new Asteroide(danio = danio, vida = vida, puntaje = puntaje, velocidad = velocidad, image = imagen, position = configuracion.randomPos())
-}
-
-class TemplateArmadura
-{
-	const property armor
-	
-	
-	method crearTemplate() = new ArmaduraAgarrable(armadura = armor, image = "shipTemplate.png", position = configuracion.randomPos())
-}
-
-
+import carcazas.*
+import balas.*
+import objectsAndColliders.*
+import templates.*
 
 class Lanzador
 {
@@ -75,14 +42,14 @@ object lanzadorDeLaser
 	{
 		position.goToRandom(game.height() - 1)
 		warningAnimation.runAnimation(position,900)
-		warningSound.playSound()
+		warningSound.play()
 		game.schedule(900,{self.disparar2()})
 	}
 	
 	method disparar2()
 	{
 		position.goDown(game.height())
-		laserSound.playSound()
+		laserSound.play()
 		laserAnimation.runAnimation(position,350)
 		if(avion.chocaContraLaser(position.x()))
 		{
@@ -90,4 +57,15 @@ object lanzadorDeLaser
 		}
 	}
 }
+ 
+class TemplateMunicion
+{
+	
+	const cartucho
+	const cantidad
+	method crearTemplate() = new Municion(cartucho = cartucho, cantidadDeBalas = cantidad, position =  configuracion.randomPos())
+	
+}
+
+
 

@@ -6,15 +6,15 @@ class Sonido
 	var property activeSound = null
 
 	
-	method playSound()
+	method play()
 	{
 		activeSound = game.sound(sonido)
 		activeSound.play()
 	}
 	
-	method playSound(volume)
+	method play(volume)
 	{
-		self.playSound()
+		self.play()
 		activeSound.volume(volume/100)
 	}
 	

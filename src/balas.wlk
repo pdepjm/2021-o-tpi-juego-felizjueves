@@ -1,11 +1,13 @@
 import wollok.game.*
-import objetoGenerico.*
+import objectsAndColliders.*
 import configuracion.*
 import avion.*
 import asteroide.*
 import MutablePosition.*
 import sonidos.*
 import animations.*
+import lanzadores.*
+import templates.*
 
 class Cartucho
 {
@@ -30,19 +32,6 @@ class Cartucho
 	}
 }
 
-class TemplateBala 
-{
-	const property danio
-	const property imagen
-	const property velocidad
-	const property efectoDisparo
-	
-
-	
-	method crearTemplateBala() = new Bala(velocidad = self.velocidad(), image = self.imagen(), position = configuracion.crearPositionBala(), danio = self.danio(),vida = 1, collider = balaCollider,soundEffect = efectoDisparo)
-	
-	
-}
 
 class Bala inherits MovingObject(collider = balaCollider,vida = 1)
 {
@@ -53,20 +42,14 @@ class Bala inherits MovingObject(collider = balaCollider,vida = 1)
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-		hitEffect.playSound()
+		hitEffect.play()
 		animation.runAnimation(objetoQueChoca.position(),150)
 		objetoQueChoca.reducirVida(danio)
 	}
 	
 	method shootSound()
 	{
-		soundEffect.playSound()
-	}
-	
-	override method morir()
-	{
-		game.schedule(150,{game.removeVisual(self)})
-		game.schedule(160,{configuracion.listaPosicionesDeBala().add(self.position())})
+		soundEffect.play()
 	}
 }
 
@@ -75,11 +58,6 @@ object cartuchoDefault inherits Cartucho (bala = balaDefault,cantidadDeBalas = 3
 object cartuchoGrande inherits Cartucho (bala = balaGrande,cantidadDeBalas = 10,cantidadDefault = 10) {}
 object cartuchoMediano inherits Cartucho(bala = balaMediana, cantidadDeBalas = 20, cantidadDefault = 20){}
 
-object balaDefault inherits TemplateBala(danio = 1, imagen = "misil_chico.png", velocidad = 0.6, efectoDisparo = new Sonido(sonido = "smallshoot.mp3.wav")){} // ignorar esto
-object balaMediana inherits  TemplateBala(danio = 2, imagen = "misil_mediano.png", velocidad = 0.4,efectoDisparo = new Sonido(sonido = "midshoot.mp3.wav")){}
-object balaGrande inherits  TemplateBala(danio = 3, imagen = "misil_grande.png", velocidad = 0.3,efectoDisparo = new Sonido(sonido = "bigshoot.mp3.wav")){}
-
-
 class Municion inherits MovingObject(vida = 1,velocidad = -1, collider = provisionCollider, image = "municion.png")
 {
 	const cartucho
@@ -87,7 +65,7 @@ class Municion inherits MovingObject(vida = 1,velocidad = -1, collider = provisi
 	const sonido = new Sonido(sonido = "municionRec.wav")
 	override method aplicarEfectoSobre(objeto)
 	{
-	sonido.playSound()
+	sonido.play()
 	avion.cargarCartucho(cartucho,cantidadDeBalas)
 	}
 }

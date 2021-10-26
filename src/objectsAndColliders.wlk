@@ -5,10 +5,6 @@ import asteroide.*
 import avion.*
 import MutablePosition.*
 
-object faltaAgregar
-{
-	
-}
 
 class GenericObject
 {
@@ -61,7 +57,11 @@ class MovingObject inherits GenericObject
 	method desplazar() 
 	{
      arriba.movimientoVertical(self.position(),velocidad)
-	if(position.y().abs() > (game.height() + 1) or position.y() < -1) game.removeVisual(self)
+	if(position.y().abs() > (game.height() + 1) or position.y() < -1) 
+     { 
+     	game.removeVisual(self)
+     	configuracion.posicionesNoUsadas().add(self.position())
+     }
 	}
 	
 	method reducirVida(_danio)
@@ -72,24 +72,22 @@ class MovingObject inherits GenericObject
    override method chocaContra(unCollider) = super(unCollider) and not self.sinVida()
 }
 
-object ammoTracker inherits TextObject
-{
-	method position() = avion.position().up(-1)
-	method text() = "Ammo: " + avion.municionActual().toString()
-}
-object vidaTracker inherits TextObject
-{
-	method position() = avion.position().up(1)
-	method text() = "Vida: " + avion.vida().toString()
-}
 
 
 class TextObject 
 {
-	var property collider = new Collider()
+	const collider = new Collider()
 	const property tipo = "Texto"
+	var property position 
+	method collider() = collider
     method chocaContra(objeto) = false
     method seMueve() = false
+    
+    method moverHacia(direccion)
+	{
+	 direccion.proximaPosicion(position)
+	}
+    
 }
 
 
