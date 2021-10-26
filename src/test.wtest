@@ -1,17 +1,13 @@
-/* 
-import soundProducer.*
+
 import wollok.game.*
 import avion.*
 import direcciones.*
 import balas.*
 import asteroide.*
 import configuracion.*
+import lanzadores.*
 
 describe "Funcionamiento de movimientos" {
-	method initialize() {
-		//soundProducer.provider(soundProviderMock)		
-	}
-	
 	
 	test "La nave se mueve hacia arriba" {
 		avion.moverHacia(arriba)
@@ -39,6 +35,7 @@ describe "Funcionamiento del disparo" {
 	
 	//Cantidad de balas iniciales del cartuchoDefault : 30
 	
+	/*
 	test "Luego de disparar una vez aun le quedan balas"{
 		avion.dispara()
 		assert.that(cartuchoDefault.tieneBalas())
@@ -47,7 +44,7 @@ describe "Funcionamiento del disparo" {
 	test "Luego de disparar 30 veces el cartucho se queda sin balas"{
 		30.times({_ => avion.dispara()})
 		assert.notThat(cartuchoDefault.tieneBalas())
-	}
+	} Problemas con sonido*/
 	
 	test "Inicialmente el arma tiene el cartuchoDefault"{
 		assert.equals(cartuchoDefault,rifle.cartuchos().get(rifle.selectorCartucho()))
@@ -61,22 +58,22 @@ describe "Funcionamiento del disparo" {
 
 describe "Verificar vida de la nave"{
 	
-	// La carcaza de la nave tiene vida igual a 1
-	test "Inicialmente la nave tiene una vida mayor a 0"{
-		assert.equals(1,carcaza.vida())
+	// La armadura default posee 3 de vida
+	test "Inicialmente la nave tiene una vida igual a 3"{
+		assert.equals(3,avion.armadura().vida())
 	}
 	
-	test "la nave recibe daño y su vida queda en 0"{
+	test "la nave recibe daño y su vida queda en 2"{
 		avion.reducirVida(1)
-		assert.equals(0,carcaza.vida())
+		assert.equals(2,avion.armadura().vida())
 	}
 }
 
+/* 
 describe "Asteroides"{
 	
-	const template = new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.3, puntaje = 100,vida = 1)
-	const asteroidePrueba = template.crearTemplateAsteroide()
-	
+	const template = new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.6, puntaje = 100,vida = 1)
+	const asteroidePrueba = template.crearTemplate()
 	
 	test "El asteroide no esta destruido(tiene vida)"{
 		assert.notThat(asteroidePrueba.sinVida())
@@ -100,8 +97,8 @@ describe "Asteroides"{
 	
 	test "Al chocar con el avion, el avion pierde vida"{
 		asteroidePrueba.aplicarEfectoSobre(avion)
-		assert.equals(0,carcaza.vida())
+		assert.equals(0,avion.armadura().vida())
 		
 	}
 }
-* */
+*/
