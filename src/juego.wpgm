@@ -9,5 +9,5 @@ program juego {
 	configuracion.mainMenu()
 	game.start()
 }
- 
+  
  
