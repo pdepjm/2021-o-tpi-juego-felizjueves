@@ -6,6 +6,7 @@ import balas.*
 import asteroide.*
 import configuracion.*
 import lanzadores.*
+import templates.*
 
 describe "Funcionamiento de movimientos" {
 	
@@ -69,7 +70,7 @@ describe "Verificar vida de la nave"{
 	}
 }
 
-/* 
+
 describe "Asteroides"{
 	
 	const template = new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.6, puntaje = 100,vida = 1)
@@ -95,10 +96,13 @@ describe "Asteroides"{
 		assert.equals(100,pointTracker.puntajeAcumulado())
 	}
 	
+	/* 
 	test "Al chocar con el avion, el avion pierde vida"{
 		asteroidePrueba.aplicarEfectoSobre(avion)
 		assert.equals(0,avion.armadura().vida())
 		
 	}
+	
+	Problemas con sonido*/
 }
-*/
+

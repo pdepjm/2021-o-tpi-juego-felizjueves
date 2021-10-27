@@ -48,6 +48,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
 	{
 	 direccion.proximaPosicion(position)
 	 ammoTracker.moverHacia(direccion)
+	 vidaTracker.moverHacia(direccion)
 	}
 	
 	method vida() = armadura.vida()
@@ -143,7 +144,7 @@ object ammoTracker inherits TextObject(position = new MutablePosition())
 	{
 		position.goTo(avion.position())
 		position.goUp(1)
-		}
+	}
 }
 
 object vidaTracker inherits TextObject(position =  new MutablePosition())
@@ -152,9 +153,10 @@ object vidaTracker inherits TextObject(position =  new MutablePosition())
 	
 	method reset() 
 	{
-	position.goTo(avion.position())
-	position.goDown(1)
+		position.goTo(avion.position())
+		position.goDown(1)
 	}
+
 }
 
 
