@@ -32,11 +32,4 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.uqbar.project.wollok.wollokNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>assets/mainTheme.mp3</name>
-			<type>1</type>
-			<location>C:/Users/Facundo/Desktop/Wollok/workspace/2021-o-tpi-juego-felizjueves/assets/mainTheme.mp3</location>
-		</link>
-	</linkedResources>
 </projectDescription>
