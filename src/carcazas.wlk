@@ -84,22 +84,10 @@ object carcazaDeMuniciones inherits Carcaza(vida = 2, image = "armaduraMunicione
 
 object carcazaInfinita inherits Carcaza(vida = 5, image = "armaduraInfinita.png", delayHabilidad = 50, vidaDefault = 5)
 {
-	const soundEffect = new Sonido(sonido = "bigOOF.mp3")
 	
 	override method habilidadEspecial()
 	{
-		
-		const firstLayer = new BackgroundElement(image = "firstlayer.png")
-		const secondLayer = new BackgroundElement(image = "secondlayer.png")
-		configuracion.mainTheme().volume(0)
-		soundEffect.play()
-		game.schedule(400, {game.addVisual(firstLayer)})
-		game.schedule(900,{game.addVisual(secondLayer)})
-		game.schedule(1700,{game.removeVisual(firstLayer)})
-		game.schedule(1900, {game.removeVisual(secondLayer)})
-		game.schedule(1600, {configuracion.reventarAsteroides()})
-		game.schedule(2000,{configuracion.mainTheme().volume(0.8)})
-		
+		configuracion.reventarAsteroides()
 	}
 	
 }

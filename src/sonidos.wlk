@@ -22,4 +22,9 @@ class Sonido
 	{
 		activeSound.volume(volume)
 	}
+	
+	method stop()
+	{
+		activeSound.stop()
+	}
 }

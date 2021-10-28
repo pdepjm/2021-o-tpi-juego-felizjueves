@@ -22,13 +22,14 @@ class Lanzador
 	}
 }
 
-object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.6, puntaje = 100,vida = 1),
+object lanzadorDeAsteroide inherits Lanzador(listaDeTemplates = [new TemplateAsteroide(danio =1, imagen = "asteroideChiquitin.png", velocidad = -0.4, puntaje = 100,vida = 1),
 							new TemplateAsteroide(danio =1, imagen = "asteroideMediano.png", velocidad = -0.4, puntaje = 200,vida = 2),
 							new TemplateAsteroide(danio =1, imagen = "asteroideGrande.png", velocidad = -0.3, puntaje = 300,vida = 3)])
 {}
 
 object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new TemplateVida(vida = 1), new TemplateVida(vida = 3), new TemplateMunicion(cartucho = cartuchoDefault,cantidad = 10), new TemplateMunicion(cartucho = cartuchoGrande, cantidad = 5), new TemplateMunicion(cartucho = cartuchoMediano,cantidad = 4), new TemplateArmadura(armor = carcazaInfinita), new TemplateArmadura(armor = carcazaNormal), new TemplateArmadura(armor = carcazaDeMuniciones)])
 {}
+
 
 object lanzadorDeLaser
 {
@@ -49,7 +50,7 @@ object lanzadorDeLaser
 	method disparar2()
 	{
 		position.goDown(game.height())
-		laserSound.play()
+		laserSound.play(50)
 		laserAnimation.runAnimation(position,350)
 		if(avion.chocaContraLaser(position.x()))
 		{

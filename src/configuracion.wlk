@@ -8,11 +8,14 @@ import lanzadores.*
 import MutablePosition.*
 import sonidos.*
 import carcazas.*
+import animations.*
+import pepita.*
 
 object configuracion {
 	
 	const  mainTheme = new Sonido(sonido = "mainTheme.mp3")
 	const  gameOverSound = new Sonido(sonido = "gameOver.wav")
+	const musicaEpica = new Sonido(sonido =  "navras.mp3")
 	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
@@ -36,10 +39,12 @@ object configuracion {
 		pointTracker.reset()
 		self.configurarColision(avion)
 		self.configurarTeclas()
-		game.onTick(150,"Actualizar todas las posiciones" ,{self.actualizarPosiciones()})
-		game.onTick(2000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
-		game.onTick(9000, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
-		game.onTick(3000, "Lanzar provision", {lanzadorDeLaser.disparar1()})
+		game.onTick(200,"Actualizar todas las posiciones que no sean balas" ,{self.actualizarPosicionesNoBalas()})
+		game.onTick(150, "Actualizar posiciones de las balas", {self.actualizarPosicionesBalas()})
+		game.onTick(1400, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
+		game.onTick(8678, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
+		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
+		game.schedule(30000, {self.crearPepita()})
 	}
 	
 	method configurarColision(objeto)
@@ -65,7 +70,17 @@ object configuracion {
 	
 	method reventarAsteroides()
 	{
-		game.allVisuals().filter({x => x.collider() == asteroideCollider}).forEach({x => game.removeVisual(x)})
+		const soundEffect = new Sonido(sonido = "bigOOF.mp3")
+		const firstLayer = new BackgroundElement(image = "firstlayer.png")
+		const secondLayer = new BackgroundElement(image = "secondlayer.png")
+		self.mainTheme().volume(0)
+		soundEffect.play()
+		game.schedule(400, {game.addVisual(firstLayer)})
+		game.schedule(900,{game.addVisual(secondLayer)})
+		game.schedule(1700,{game.removeVisual(firstLayer)})
+		game.schedule(1700,{game.allVisuals().filter({x => x.collider() == asteroideCollider}).forEach({x => x.reducirVida(5)})})
+		game.schedule(1900, {game.removeVisual(secondLayer)})
+		game.schedule(2000,{self.mainTheme().volume(0.8)})
 	}
 	
 
@@ -106,6 +121,7 @@ object configuracion {
 	method gameOver()
 	{
 		mainTheme.volume(0)
+		musicaEpica.volume(0)
 		gameOverSound.play()
 		self.mainMenu()
 		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
@@ -118,18 +134,50 @@ object configuracion {
 	}
 	
 	
-	method actualizarPosiciones()
+	method actualizarPosicionesNoBalas()
 	{
-		game.allVisuals().filter({x => x.seMueve()}).forEach({x => x.desplazar()})
+		game.allVisuals().filter({x => x.seMueve()}).filter({x => not (x.collider() == balaCollider)}).forEach({x => x.desplazar()})
+	}
+	
+	method actualizarPosicionesBalas()
+	{
+		game.allVisuals().filter({x =>  x.collider() == balaCollider}).forEach({x => x.desplazar()})
+	}
+	
+	method crearPepita()
+	{
+
+		
+		self.reventarAsteroides()
+		mainTheme.stop()
+		game.removeTickEvent("Lanzar asteroide")
+		game.removeTickEvent("Lanzar laser")
+		game.removeTickEvent("Lanzar provision")
+		game.schedule(2000,{pepita.aparecer()})
+		game.schedule(4000,{self.iniciarPepitaFase()})
+		
+		
+		
+		
+	}
+	
+	method iniciarPepitaFase()
+	{
+		musicaEpica.play()
+		game.onTick(1200,"Lanzar laser", {lanzadorDeLaser.disparar1()})
+		game.onTick(3000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
+		game.onTick(6200,"Lanzar provision", {lanzadorDeProvisiones.lanzar()})
+		game.onTick(4000,"Teleport pepita", {pepita.teleport()})
+		game.onTick(6000, "Pepita ataca", {pepita.attack()})
 	}
 	
 	
 }
 
 
-object pointTracker inherits TextObject (position = new MutablePosition(x = 20,y = 20))
+object pointTracker inherits TextObject 
 {
-	
+	const property position = new MutablePosition(x = 20,y = 20)
 	var property puntajeAcumulado = 0
 	
 	method reset()
@@ -149,11 +197,12 @@ object pointTracker inherits TextObject (position = new MutablePosition(x = 20,y
 	
 }
 
-class BackgroundElement inherits TextObject (position = new MutablePosition(x= 0, y= 0)){
+class BackgroundElement inherits TextObject{
+const property position = new MutablePosition(x= 0, y= 0)
 const property image
 }
 
-object background inherits BackgroundElement(image = "espacio.png",position = new MutablePosition(x= 0, y= 0))
+object background inherits BackgroundElement(image = "espacio.png")
 {
 }
 
