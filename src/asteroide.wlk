@@ -24,6 +24,8 @@ class Asteroide inherits MovingObject(collider = asteroideCollider)
 		sonido.play()
 		objetoQueChoca.reducirVida(danio)
 	}
+	
+	method danio() = danio
 }
 
 
