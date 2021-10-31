@@ -40,6 +40,8 @@ object configuracion {
 		game.onTick(8678, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.schedule(30000, {self.crearPepita()})
+		game.addVisual(errorReporter)
+		game.errorReporter(errorReporter)
 	}
 	
 	method agregarObjetos()
@@ -201,6 +203,13 @@ const property image
 object background inherits BackgroundElement(image = "espacio.png")
 {
 }
+
+object errorReporter inherits TextObject
+{
+	const property position = new MutablePosition(x = 200, y = 200)
+	const property text = "e"
+}
+
 
 
 

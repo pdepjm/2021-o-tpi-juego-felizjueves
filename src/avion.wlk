@@ -149,7 +149,6 @@ class AvionCompanion inherits TextObject
 	method reset() 
 	{
 		position.goTo(avion.position())
-		position.goUp(1)
 	}
 }
 
@@ -173,9 +172,7 @@ object vidaTracker inherits AvionCompanion
 
 	super()
 	position.goDown(1)
-
-		position.goTo(avion.position())
-		position.goDown(1)
+	position.goTo(avion.position())
 
 	}
 
