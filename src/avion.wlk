@@ -172,8 +172,6 @@ object vidaTracker inherits AvionCompanion
 
 	super()
 	position.goDown(1)
-	position.goTo(avion.position())
-
 	}
 
 }
