@@ -50,6 +50,13 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 		const ala = new Ala( position = configuracion.randomPos())
 		ala.iniciar()
 	}
+	
+	override method morir()
+	{
+		super()
+		pointTracker.aumentarPuntaje(9999999999)
+		configuracion.gameOver()
+	}
 }
 
 

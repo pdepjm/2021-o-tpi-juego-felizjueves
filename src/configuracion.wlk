@@ -70,8 +70,6 @@ object configuracion {
 		keyboard.r().onPressDo({avion.usarHabilidad()})
 		keyboard.k().onPressDo({self.gameOver()})
 		keyboard.y().onPressDo({self.reventarAsteroides()})
-		//keyboard.z().onPressDo({avion.dispara(balaTriple)})
-		//keyboard.x().onPressDo({avion.dispara(balaChica)})
 	}
 	
 	method reventarAsteroides()
@@ -204,10 +202,10 @@ object background inherits BackgroundElement(image = "espacio.png")
 {
 }
 
-object errorReporter inherits TextObject
+object errorReporter inherits TextObject // Hay algunos errores con las colisiones que no afectan al juego pero tiran error y queda medio feo, por lo que decidi esconder los errores por el momento en este objeto. 
 {
 	const property position = new MutablePosition(x = 200, y = 200)
-	const property text = "e"
+	const property text = "No me llamen escoba, es ofensivo."
 }
 
 
