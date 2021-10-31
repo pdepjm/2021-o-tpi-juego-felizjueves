@@ -70,6 +70,13 @@ class Municion inherits MovingObject(vida = 1,velocidad = -1, collider = provisi
 	avion.cargarCartucho(cartucho,cantidadDeBalas)
 	}
 
+
+
+	
+	method cartucho() = cartucho
+	
+	method cantidadDeBalas() = cantidadDeBalas
+
 }
 
 

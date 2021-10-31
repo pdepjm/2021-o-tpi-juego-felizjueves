@@ -32,11 +32,4 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.uqbar.project.wollok.wollokNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>assets/mainTheme.mp3</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Desktop/mainTheme.mp3</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

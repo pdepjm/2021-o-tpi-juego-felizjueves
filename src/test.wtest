@@ -7,7 +7,10 @@ import asteroide.*
 import configuracion.*
 import lanzadores.*
 import templates.*
+
 import MutablePosition.*
+
+import carcazas.*
 
 describe "Funcionamiento de movimientos" {
 	
@@ -34,7 +37,20 @@ describe "Funcionamiento de movimientos" {
 }
 
 describe "Funcionamiento del disparo" {
+
 	
+	
+	test "Luego de disparar una vez aun le quedan balas"{
+		avion.arma().cartuchoSeleccionado().consumirBala()
+		assert.that(avion.arma().cartuchoSeleccionado().tieneBalas())
+	}
+	
+	test "Luego de disparar 30 veces el cartucho se queda sin balas"{
+		30.times({_ => avion.arma().cartuchoSeleccionado().consumirBala()})
+		assert.notThat(avion.arma().cartuchoSeleccionado().tieneBalas())
+	} 
+	
+
 	test "Inicialmente el arma tiene el cartuchoDefault"{
 		assert.equals(cartuchoDefault,rifle.cartuchos().get(rifle.selectorCartucho()))
 	}
@@ -85,5 +101,66 @@ describe "Asteroides"{
 		assert.equals(100,pointTracker.puntajeAcumulado())
 	}
 	
+
+	test "Al chocar con el avion, el avion pierde vida"{
+		avion.reducirVida(asteroidePrueba.danio())
+		assert.equals(2,avion.armadura().vida())
+		
+	}
+	
+
+
 }
+
+
+describe "Provisiones"{
+	
+	const templateVida = new TemplateVida(vida=1)
+	const provisionVida = templateVida.crearTemplate()
+	
+	const templateMunicion = new TemplateMunicion(cartucho = cartuchoDefault,cantidad = 10) 
+	const provisionMunicion = templateMunicion.crearTemplate()
+	
+	const templateArmadura = new TemplateArmadura(armor = carcazaInfinita)
+	const provisionArmadura = templateArmadura.crearTemplate()
+	
+	
+	test "provisionVida cura 1 de vida"{
+		assert.equals(1,provisionVida.vidaQueCura())
+	}
+	
+	test"Inicialemente el avion tiene 3 de vida"{
+		assert.equals(3,avion.vida())	
+	}
+	
+	test "provisionVida al impactar con el avion le aumenta 1 de vida"{
+		avion.agregarVida(provisionVida.vidaQueCura())
+		assert.equals(4,avion.vida())
+	}
+	
+	test "La municion contiene 10 balas del cartuchoDefault"{
+		assert.equals(10,provisionMunicion.cantidadDeBalas())
+		assert.equals(cartuchoDefault,provisionMunicion.cartucho())
+	}
+	
+	test "Avion inicialmente tiene 30 balas del cartucho default"{
+		assert.equals(cartuchoDefault,avion.arma().cartuchoSeleccionado())
+		assert.equals(30,avion.arma().cartuchoSeleccionado().cantidadDeBalas())
+	}
+	
+	test "provisionMunicion al impactar con el avion, la aumenta 10 balas"{
+		avion.cargarCartucho(provisionMunicion.cartucho(),provisionMunicion.cantidadDeBalas())
+		assert.equals(40,avion.arma().cartuchoSeleccionado().cantidadDeBalas())
+	}
+	
+	test "Avion inicialmente lleva puesta la carcaza normal"{
+		assert.equals(carcazaNormal,avion.armadura())
+	}
+	
+	test "provisionArmadura al impactar con el avion, le cambia su armadura a carcazaInfinita"{
+		avion.cambiarArmadura(provisionArmadura.armadura())
+		assert.equals(carcazaInfinita,avion.armadura())
+	}
+}
+
 

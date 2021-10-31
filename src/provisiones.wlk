@@ -30,4 +30,6 @@ class ArmaduraAgarrable inherits MovingObject(collider = provisionCollider, velo
 		sound.play()
 		avion.cambiarArmadura(armadura)
 	}
+	
+	method armadura() = armadura
 }
