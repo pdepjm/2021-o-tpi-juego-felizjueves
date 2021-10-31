@@ -12,7 +12,9 @@ SANCHEZ ROCIO
 
 ## Capturas
 
-(agregar)
+![Imagen](menu.png "Menu principal")
+![OtraImagen](controles.png "Controles")
+![Gameplay](Imagen1.png "Gameplay")
 
 ## Reglas de Juego / Instrucciones
 
