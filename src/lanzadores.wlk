@@ -59,14 +59,6 @@ object lanzadorDeLaser
 	}
 }
  
-class TemplateMunicion
-{
-	
-	const cartucho
-	const cantidad
-	method crearTemplate() = new Municion(cartucho = cartucho, cantidadDeBalas = cantidad, position =  configuracion.randomPos())
-	
-}
 
 
 

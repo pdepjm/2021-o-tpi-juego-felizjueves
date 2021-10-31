@@ -10,7 +10,7 @@ class GenericObject
 {
 	const property image
 	const property collider
-	var property position
+	const property position
 	
 	method seMueve()
 
@@ -23,11 +23,16 @@ class GenericObject
 
 	method morir() {
 		game.schedule(150,{game.removeVisual(self)})
-		game.schedule(160,{configuracion.posicionesNoUsadas().add(self.position())})
+		game.schedule(300,{configuracion.posicionesNoUsadas().add(self.position())})
 	}
 	
 	method chocaContra(unCollider) = collider.chocaContra(unCollider) 
 	
+	method initPos(height)
+	{
+		position.goToRandom(height)
+	}
+
 }
 
 class Collider
@@ -43,7 +48,9 @@ object avionCollider inherits Collider(listColliders = [asteroideCollider,provis
 
 object provisionCollider inherits Collider(listColliders = [avionCollider,balaCollider]){}
 
-object balaCollider inherits Collider(listColliders = [asteroideCollider]){}
+object balaCollider inherits Collider(listColliders = [asteroideCollider,pepitaCollider]){}
+
+object pepitaCollider inherits Collider(listColliders = [balaCollider,avionCollider]){}
 
 
 class MovingObject inherits GenericObject 
@@ -59,8 +66,7 @@ class MovingObject inherits GenericObject
      arriba.movimientoVertical(self.position(),velocidad)
 	if(position.y().abs() > (game.height() + 1) or position.y() <= 0) 
      { 
-     	game.removeVisual(self)
-     	configuracion.posicionesNoUsadas().add(self.position())
+     	self.morir()
      }
 	}
 	
@@ -81,10 +87,7 @@ class TextObject
 	 
 	method collider() = collider
     method chocaContra(objeto) = false
-    method seMueve() = false
-    
-   
-    
+    method seMueve() = false   
 }
 
 

@@ -5,7 +5,7 @@ import objectsAndColliders.*
 import configuracion.*
 import avion.*
 
-object pepita inherits GenericObject(collider = asteroideCollider, image = "pepita.png", position = new MutablePosition(x = game.center().x(), y = game.center().y() + 5))
+object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.png", position = new MutablePosition(x = game.center().x(), y = game.center().y() + 5))
 {
 	const teleportAnim = new DynamicAnimation(frameRate = 50, animationImages = ["pepitaAnim1.png","pepitaAnim2.png","pepitaAnim3.png","pepitaAnim4.png","pepitaAnim3.png","pepitaAnim2.png","pepitaAnim1.png"])
 	const eyeAnim = new DynamicAnimation(frameRate = 150, animationImages = ["pepitaEye1.png","pepitaEye2.png","pepitaEye3.png"])
@@ -20,11 +20,12 @@ object pepita inherits GenericObject(collider = asteroideCollider, image = "pepi
 	
 	override method aplicarEfectoSobre(objeto) 
 	{
-		objeto.morir()
+		objeto.reducirVida(2000)
 	}
 	
 	method aparecer()
 	{
+		position.goTo(game.center().x(),game.center().y() + 5)
 		game.addVisual(self)
 		teleportAnim.runAnimation(self,350)
 		game.schedule(1000,{eyeAnim.runAnimation(self,350)})
@@ -52,7 +53,7 @@ object pepita inherits GenericObject(collider = asteroideCollider, image = "pepi
 }
 
 
-class Ala inherits MovingObject(collider = asteroideCollider, image = "alita.png", velocidad = -2,vida = 3)
+class Ala inherits MovingObject(collider = asteroideCollider, image = "alita.png", velocidad = -1,vida = 2)
 {
 	override method aplicarEfectoSobre(objeto)
 	{
@@ -61,7 +62,7 @@ class Ala inherits MovingObject(collider = asteroideCollider, image = "alita.png
 	
 	method iniciar()
 	{
-		position.goTo(avion.position().up(10))
+		position.goTo(avion.position().x(),game.height())
 		game.addVisual(self)
 		configuracion.configurarColision(self)
 	}

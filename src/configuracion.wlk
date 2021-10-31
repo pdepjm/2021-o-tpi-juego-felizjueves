@@ -20,8 +20,7 @@ object configuracion {
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
 	const property posicionesNoUsadas = []
-	
-	const position = new MutablePosition()
+	const property posicionesActivas = []
 	
 	method mainTheme() {return mainTheme}
 	method gameOverSound() { return gameOverSound}
@@ -31,11 +30,7 @@ object configuracion {
 		mainTheme.play(50)
 		avion.reset()
 		carcazasDisponibles.forEach({x => x.reset()})
-		game.addVisual(background)
-		game.addVisual(avion)	
-		game.addVisual(ammoTracker)
-		game.addVisual(vidaTracker)
-		game.addVisual(pointTracker)	
+	    self.agregarObjetos()
 		pointTracker.reset()
 		self.configurarColision(avion)
 		self.configurarTeclas()
@@ -45,6 +40,15 @@ object configuracion {
 		game.onTick(8678, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.schedule(30000, {self.crearPepita()})
+	}
+	
+	method agregarObjetos()
+	{
+		game.addVisual(background)
+		game.addVisual(avion)	
+		game.addVisual(ammoTracker)
+		game.addVisual(vidaTracker)
+		game.addVisual(pointTracker)	
 	}
 	
 	method configurarColision(objeto)
@@ -96,28 +100,29 @@ object configuracion {
 	method randomPos() {
 		if (not posicionesNoUsadas.isEmpty())
 		{
-			 const pos = posicionesNoUsadas.anyOne()
+			 const pos = posicionesNoUsadas.last()
 			 posicionesNoUsadas.remove(pos)
-			 pos.goTo(self.giveRandomSeed())
+			 if (posicionesActivas.contains(pos))
+			 {
+			 	if (not posicionesNoUsadas.isEmpty())
+			 	{
+			 		self.randomPos()
+			 	}
+			 	else return new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
+			 }
+			 else
+			 {
+			 posicionesActivas.add(pos)
+			 return pos
+			 }
 			 return pos
 		}
 		else return new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
 		}
 		
 	
-	method giveRandomSeed()
-	{
-		position.goToRandom(game.height())
-		return position
-	}
 	
-	method crearPositionBala() 
-	{
-		const z = self.randomPos()
-		z.goTo(avion.position())
-		return z
-	     
-	}
+
 	method gameOver()
 	{
 		mainTheme.volume(0)
@@ -146,19 +151,13 @@ object configuracion {
 	
 	method crearPepita()
 	{
-
-		
 		self.reventarAsteroides()
 		mainTheme.stop()
 		game.removeTickEvent("Lanzar asteroide")
 		game.removeTickEvent("Lanzar laser")
 		game.removeTickEvent("Lanzar provision")
 		game.schedule(2000,{pepita.aparecer()})
-		game.schedule(4000,{self.iniciarPepitaFase()})
-		
-		
-		
-		
+		game.schedule(4000,{self.iniciarPepitaFase()})	
 	}
 	
 	method iniciarPepitaFase()
@@ -191,10 +190,7 @@ object pointTracker inherits TextObject
 	}
 	
 	method text() = puntajeAcumulado.toString()
-	
-	
 	method textColor() = "00FF00FF"
-	
 }
 
 class BackgroundElement inherits TextObject{

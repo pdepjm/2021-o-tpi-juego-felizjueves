@@ -63,11 +63,13 @@ class Municion inherits MovingObject(vida = 1,velocidad = -1, collider = provisi
 	const cartucho
 	var cantidadDeBalas
 	const sonido = new Sonido(sonido = "municionRec.wav")
+	
 	override method aplicarEfectoSobre(objeto)
 	{
 	sonido.play()
 	avion.cargarCartucho(cartucho,cantidadDeBalas)
 	}
+
 }
 
 

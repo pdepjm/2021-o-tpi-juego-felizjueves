@@ -4,23 +4,25 @@ class Sonido
 {
 	const property sonido
 	var property activeSound = null
+	var volume = 100
 
 	
 	method play()
 	{
 		activeSound = game.sound(sonido)
+		activeSound.volume(volume/100)
 		activeSound.play()
 	}
 	
-	method play(volume)
+	method play(_volume)
 	{
+		volume = _volume
 		self.play()
-		activeSound.volume(volume/100)
 	}
 	
-	method volume(volume)
+	method volume(_volume)
 	{
-		activeSound.volume(volume)
+		activeSound.volume(_volume)
 	}
 	
 	method stop()

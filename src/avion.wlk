@@ -64,7 +64,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
 
   	method cambiarMunicion() {arma.cambiarSelector()}
   	
-  	method agregarVida(x) // Asi como esta no parece tener mucho sentido pero esta armado con la idea de que habria muchas carcazas y por ahi algun efecto adicional.
+  	method agregarVida(x)
   	{
   		armadura.agregarVida(x)
   	}
@@ -105,7 +105,6 @@ object rifle
 		}
 	}
 	
-	//object contadorDeMunicion inherits TextObject{}
 	
 	method lanzarProjectil(bala)
 	{
@@ -155,18 +154,13 @@ class AvionCompanion inherits TextObject
 
 object ammoTracker inherits AvionCompanion
 {
-	
 	method text() = "Ammo: " + avion.municionActual().toString()
-	
-	
 		
 	override method reset()
 	{
 		super()
 		position.goUp(1)
 	}
-		
-		
 }
 
 object vidaTracker inherits AvionCompanion
@@ -178,7 +172,6 @@ object vidaTracker inherits AvionCompanion
 	super()
 	position.goDown(1)
 	}
-	
 	
 }
 
