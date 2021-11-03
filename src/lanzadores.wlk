@@ -57,6 +57,7 @@ object lanzadorDeLaser
 			avion.reducirVida(2)
 		}
 	}
+	
 }
  
 

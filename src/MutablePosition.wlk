@@ -21,7 +21,7 @@ class MutablePosition {
   }
   
   method goUp(n){
-      y = (y + n)
+   y = (y + n)
   }
   
   method goDown(n){

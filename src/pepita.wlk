@@ -15,6 +15,7 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 	
 	method reducirVida(x)
 	{
+		self.teleport()
 		vida -= 1
 	}
 	
@@ -57,6 +58,8 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 		pointTracker.aumentarPuntaje(9999999999)
 		configuracion.gameOver()
 	}
+	
+	
 }
 
 

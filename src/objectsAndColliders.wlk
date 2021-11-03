@@ -23,7 +23,7 @@ class GenericObject
 
 	method morir() {
 		game.schedule(150,{game.removeVisual(self)})
-		game.schedule(300,{configuracion.posicionesNoUsadas().add(self.position())})
+		game.schedule(300,{configuracion.agregarPosicionNoUsada(self.position())})
 	}
 	
 	method chocaContra(unCollider) = collider.chocaContra(unCollider) 

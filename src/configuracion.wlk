@@ -15,7 +15,7 @@ object configuracion {
 	
 	const  mainTheme = new Sonido(sonido = "mainTheme.mp3")
 	const  gameOverSound = new Sonido(sonido = "gameOver.wav")
-	const musicaEpica = new Sonido(sonido =  "navras.mp3")
+	const pepitaTheme = new Sonido(sonido =  "pepitaTheme.mp3")
 	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
@@ -39,7 +39,7 @@ object configuracion {
 		game.onTick(1400, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(8678, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
-		game.schedule(30000, {self.crearPepita()})
+		game.schedule(60000, {self.crearPepita()})
 		game.addVisual(errorReporter)
 		game.errorReporter(errorReporter)
 	}
@@ -97,6 +97,12 @@ object configuracion {
 		keyboard.s().onPressDo({game.stop()})
 	} 
 	
+	method agregarPosicionNoUsada(position)
+	{
+		position.goToRandom(game.height())
+		self.posicionesNoUsadas().add(position)
+	}
+	
 	method randomPos() {
 		if (not posicionesNoUsadas.isEmpty())
 		{
@@ -104,11 +110,7 @@ object configuracion {
 			 posicionesNoUsadas.remove(pos)
 			 if (posicionesActivas.contains(pos))
 			 {
-			 	if (not posicionesNoUsadas.isEmpty())
-			 	{
 			 		self.randomPos()
-			 	}
-			 	else return new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
 			 }
 			 else
 			 {
@@ -126,7 +128,7 @@ object configuracion {
 	method gameOver()
 	{
 		mainTheme.volume(0)
-		musicaEpica.volume(0)
+		pepitaTheme.volume(0)
 		gameOverSound.play()
 		self.mainMenu()
 		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
@@ -162,7 +164,7 @@ object configuracion {
 	
 	method iniciarPepitaFase()
 	{
-		musicaEpica.play()
+		pepitaTheme.play()
 		game.onTick(1200,"Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.onTick(3000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(6200,"Lanzar provision", {lanzadorDeProvisiones.lanzar()})

@@ -56,7 +56,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
 
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-		objetoQueChoca.morir()
+		objetoQueChoca.reducirVida(100)
 	}
 
 
