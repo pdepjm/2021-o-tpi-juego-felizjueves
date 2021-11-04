@@ -27,23 +27,43 @@ object configuracion {
 	
 	method configuracionDeJuego(){
 		game.clear()
-		if (pepitaTheme.isActive()) pepitaTheme.stop()
-		mainTheme.play(50)
-		avion.reset()
-		carcazasDisponibles.forEach({x => x.reset()})
+		self.iniciarSonidos()
+		self.resetearEntidades()
 	    self.agregarObjetos()
-		pointTracker.reset()
 		self.configurarColision(avion)
 		self.configurarTeclas()
+		self.iniciarEventos()
+	}
+	
+	method iniciarSonidos()
+	{
+		if (pepitaTheme.isActive()) pepitaTheme.stop()
+		mainTheme.play(50)
+	}
+	
+	method resetearEntidades()
+	{
+		avion.reset()
+		pointTracker.reset()
+		carcazasDisponibles.forEach({x => x.reset()})
+	}
+	
+	method iniciarEntidades()
+	{
+		game.addVisual(errorReporter)
+		game.addVisual(entityTracker)
+		game.errorReporter(errorReporter)
+	}
+	
+	
+	method iniciarEventos()
+	{
 		game.onTick(200,"Actualizar todas las posiciones que no sean balas" ,{self.actualizarPosicionesNoBalas()})
 		game.onTick(150, "Actualizar posiciones de las balas", {self.actualizarPosicionesBalas()})
 		game.onTick(1400, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(8678, "Lanzar provision", {lanzadorDeProvisiones.lanzar()})
 		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.schedule(60000, {self.crearPepita()})
-		game.addVisual(errorReporter)
-		game.addVisual(entityTracker)
-		game.errorReporter(errorReporter)
 	}
 	
 	method agregarObjetos()
@@ -59,8 +79,6 @@ object configuracion {
 	{
 		game.onCollideDo(objeto,{objetoQueChoca => objeto.impactarContra(objetoQueChoca)})
 	}
-	
-	
 
 	method configurarTeclas(){
 		keyboard.left().onPressDo({avion.moverHacia(izquierda) })
@@ -126,8 +144,7 @@ object configuracion {
 		{
 			const pos = new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
 			posicionesActivas.add(pos)
-			return pos
-			 
+			return pos 
 		}
 			
 		}
