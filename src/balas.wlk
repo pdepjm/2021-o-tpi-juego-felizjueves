@@ -59,7 +59,7 @@ object cartuchoDefault inherits Cartucho (bala = balaDefault,cantidadDeBalas = 3
 object cartuchoGrande inherits Cartucho (bala = balaGrande,cantidadDeBalas = 10,cantidadDefault = 10) {}
 object cartuchoMediano inherits Cartucho(bala = balaMediana, cantidadDeBalas = 20, cantidadDefault = 20){}
 
-class Municion inherits MovingObject(vida = 1,velocidad = -1, collider = provisionCollider, image = "municion.png")
+class Municion inherits MovingObject(vida = 1,velocidad = -0.5, collider = provisionCollider, image = "municion.png")
 {
 	const cartucho
 	var cantidadDeBalas

@@ -8,7 +8,7 @@ import sonidos.*
 import carcazas.*
 import provisiones.*
 
-object avion inherits GenericObject(collider = avionCollider, position = new MutablePosition(x = game.center().x(),y = 0), image=null)
+object avion inherits GenericObject(collider = avionCollider, position = new MutablePosition(x = game.center().x(),y = 2), image=null)
 {
 	var property arma = rifle
 	var property armadura = carcazaNormal
@@ -29,7 +29,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    
    method reset()
    {
-   	position.goTo(game.center().x(),0)
+   	position.goTo(game.center().x(),2)
    	rifle.reset()
    	ammoTracker.reset()
    	vidaTracker.reset()
