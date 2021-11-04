@@ -17,6 +17,7 @@ class Lanzador
 	method lanzar()
 	{
 		const objt = listaDeTemplates.anyOne().crearTemplate()
+		objt.initPos(game.height())
 		game.addVisual(objt)
 		configuracion.configurarColision(objt)
 	}

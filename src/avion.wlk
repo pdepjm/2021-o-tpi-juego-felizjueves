@@ -29,8 +29,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    
    method reset()
    {
-   	position.x(game.center().x())
-   	position.y(0)
+   	position.goTo(game.center().x(),0)
    	rifle.reset()
    	ammoTracker.reset()
    	vidaTracker.reset()
@@ -150,11 +149,14 @@ class AvionCompanion inherits TextObject
 	{
 		position.goTo(avion.position())
 	}
+	
+	method textColor() = "FFFFFFF"
 }
 
 object ammoTracker inherits AvionCompanion
 {
-	method text() = "Ammo: " + avion.municionActual().toString()
+	method text() = "Ammo: " + avion.municionActual().toString() 
+	
 		
 	override method reset()
 	{

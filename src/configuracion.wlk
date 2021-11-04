@@ -27,6 +27,7 @@ object configuracion {
 	
 	method configuracionDeJuego(){
 		game.clear()
+		if (pepitaTheme.isActive()) pepitaTheme.stop()
 		mainTheme.play(50)
 		avion.reset()
 		carcazasDisponibles.forEach({x => x.reset()})
@@ -41,6 +42,7 @@ object configuracion {
 		game.onTick(3333, "Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.schedule(60000, {self.crearPepita()})
 		game.addVisual(errorReporter)
+		game.addVisual(entityTracker)
 		game.errorReporter(errorReporter)
 	}
 	
@@ -99,9 +101,11 @@ object configuracion {
 	
 	method agregarPosicionNoUsada(position)
 	{
-		position.goToRandom(game.height())
+		self.posicionesActivas().remove(position)
 		self.posicionesNoUsadas().add(position)
 	}
+	
+	method cantidadDeEntidades() = posicionesNoUsadas.size() + posicionesActivas.size()
 	
 	method randomPos() {
 		if (not posicionesNoUsadas.isEmpty())
@@ -110,16 +114,22 @@ object configuracion {
 			 posicionesNoUsadas.remove(pos)
 			 if (posicionesActivas.contains(pos))
 			 {
-			 		self.randomPos()
+			 return self.randomPos()
 			 }
 			 else
 			 {
 			 posicionesActivas.add(pos)
 			 return pos
 			 }
-			 return pos
 		}
-		else return new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
+		else 
+		{
+			const pos = new MutablePosition(x =0.randomUpTo(game.width()),y=game.height())
+			posicionesActivas.add(pos)
+			return pos
+			 
+		}
+			
 		}
 		
 	
@@ -127,11 +137,11 @@ object configuracion {
 
 	method gameOver()
 	{
-		mainTheme.volume(0)
-		pepitaTheme.volume(0)
+		if (mainTheme.isActive()) mainTheme.stop()
+		if (pepitaTheme.isActive()) pepitaTheme.stop()
 		gameOverSound.play()
 		self.mainMenu()
-		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5)})
+		game.addVisual(object { method text() = "El puntaje final fue " + pointTracker.puntajeAcumulado().toString() method position() = game.center().up(1).right(5) method textColor() = "FFFFFFF"})
 	}
 	
 	method controles(){
@@ -178,7 +188,7 @@ object configuracion {
 
 object pointTracker inherits TextObject 
 {
-	const property position = new MutablePosition(x = 20,y = 20)
+	const property position = new MutablePosition(x = 3,y = game.height() - 1)
 	var property puntajeAcumulado = 0
 	
 	method reset()
@@ -191,8 +201,8 @@ object pointTracker inherits TextObject
 		puntajeAcumulado = puntajeAcumulado + x
 	}
 	
-	method text() = puntajeAcumulado.toString()
-	method textColor() = "00FF00FF"
+	method text() = "Puntaje: "  + puntajeAcumulado.toString()
+	method textColor() = "FFFFFFF"
 }
 
 class BackgroundElement inherits TextObject{
@@ -206,8 +216,14 @@ object background inherits BackgroundElement(image = "espacio.png")
 
 object errorReporter inherits TextObject // Hay algunos errores con las colisiones que no afectan al juego pero tiran error y queda medio feo, por lo que decidi esconder los errores por el momento en este objeto. 
 {
-	const property position = new MutablePosition(x = 200, y = 200)
+	const property position = new MutablePosition(x = -20, y = 20)
 	const property text = "No me llamen escoba, es ofensivo."
+}
+
+object entityTracker inherits TextObject
+{
+	const property position = new MutablePosition(x = 0,y= game.height() - 1)
+	method text() = configuracion.cantidadDeEntidades().toString()
 }
 
 

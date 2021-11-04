@@ -66,8 +66,14 @@ class MovingObject inherits GenericObject
      arriba.movimientoVertical(self.position(),velocidad)
 	if(position.y().abs() > (game.height() + 1) or position.y() <= 0) 
      { 
-     	self.morir()
+     	self.delete()
      }
+	}
+	
+	method delete() 
+	{
+	game.schedule(150,{game.removeVisual(self)})
+	game.schedule(300,{configuracion.agregarPosicionNoUsada(self.position())})	
 	}
 	
 	method reducirVida(_danio)

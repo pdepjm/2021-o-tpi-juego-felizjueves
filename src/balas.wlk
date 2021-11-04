@@ -44,6 +44,7 @@ class Bala inherits MovingObject(collider = balaCollider,vida = 1)
 	{
 		hitEffect.play()
 		animation.runAnimation(objetoQueChoca.position(),150)
+		pointTracker.aumentarPuntaje(100)
 		objetoQueChoca.reducirVida(danio)
 	}
 	

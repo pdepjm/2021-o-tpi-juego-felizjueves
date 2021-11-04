@@ -9,7 +9,7 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 {
 	const teleportAnim = new DynamicAnimation(frameRate = 50, animationImages = ["pepitaAnim1.png","pepitaAnim2.png","pepitaAnim3.png","pepitaAnim4.png","pepitaAnim3.png","pepitaAnim2.png","pepitaAnim1.png"])
 	const eyeAnim = new DynamicAnimation(frameRate = 150, animationImages = ["pepitaEye1.png","pepitaEye2.png","pepitaEye3.png"])
-	var vida = 50
+	var vida = 20
 	
 	override method seMueve() = false
 	
@@ -17,6 +17,7 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 	{
 		self.teleport()
 		vida -= 1
+		if (vida <= 0) self.morir()
 	}
 	
 	override method aplicarEfectoSobre(objeto) 
@@ -55,7 +56,8 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 	override method morir()
 	{
 		super()
-		pointTracker.aumentarPuntaje(9999999999)
+		configuracion.reventarAsteroides()
+		game.schedule(1900,{pointTracker.aumentarPuntaje(9999999999)})
 		configuracion.gameOver()
 	}
 	

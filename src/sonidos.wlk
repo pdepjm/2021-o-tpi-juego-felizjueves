@@ -20,6 +20,8 @@ class Sonido
 		self.play()
 	}
 	
+	method isActive() = activeSound != null
+	
 	method volume(_volume)
 	{
 		activeSound.volume(_volume)
