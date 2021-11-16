@@ -44,7 +44,7 @@ class Collider
 
 object asteroideCollider inherits Collider(listColliders = [avionCollider,balaCollider]){}
 
-object avionCollider inherits Collider(listColliders = [asteroideCollider,provisionCollider]){}
+object avionCollider inherits Collider(listColliders = [asteroideCollider,provisionCollider,pepitaCollider]){}
 
 object provisionCollider inherits Collider(listColliders = [avionCollider,balaCollider]){}
 

@@ -69,6 +69,8 @@ class TemplateMunicion
 }
 
 
+
+
 object balaDefault inherits TemplateBala(danio = 1, imagen = "misil_chico.png", velocidad = 0.5, efectoDisparo = new Sonido(sonido = "smallshoot.mp3.wav")){} // ignorar esto
 object balaMediana inherits  TemplateBala(danio = 2, imagen = "misil_mediano.png", velocidad = 0.4,efectoDisparo = new Sonido(sonido = "midshoot.mp3.wav")){}
 object balaGrande inherits  TemplateBala(danio = 3, imagen = "misil_grande.png", velocidad = 0.3,efectoDisparo = new Sonido(sonido = "bigshoot.mp3.wav")){}

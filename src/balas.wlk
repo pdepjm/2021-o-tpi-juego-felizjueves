@@ -30,6 +30,8 @@ class Cartucho
 	{
 		cantidadDeBalas += x
 	}
+	
+	method balaImage() = bala.imagen()
 }
 
 
@@ -42,7 +44,7 @@ class Bala inherits MovingObject(collider = balaCollider,vida = 1)
 	
 	override method aplicarEfectoSobre(objetoQueChoca)
 	{
-		hitEffect.play()
+		hitEffect.play(20)
 		animation.runAnimation(objetoQueChoca.position(),150)
 		pointTracker.aumentarPuntaje(100)
 		objetoQueChoca.reducirVida(danio)

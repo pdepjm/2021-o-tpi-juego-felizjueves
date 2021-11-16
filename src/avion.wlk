@@ -27,12 +27,15 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    
    method chocaContraLaser(x) = (position.x() - x).abs() < 1
    
+   method posX() = position.x()
+   
    method reset()
    {
    	position.goTo(game.center().x(),2)
    	rifle.reset()
    	ammoTracker.reset()
    	vidaTracker.reset()
+   	ammoTypeTracker.reset()
    	armadura = carcazaNormal
    }
    
@@ -46,8 +49,14 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
    method moverHacia(direccion)
 	{
 	 direccion.proximaPosicion(position)
-	 ammoTracker.moverHacia(direccion)
+	 self.moverCompanions(direccion)
+	}
+	
+	method moverCompanions(direccion)
+	{
+		ammoTracker.moverHacia(direccion)
 	 vidaTracker.moverHacia(direccion)
+	 ammoTypeTracker.moverHacia(direccion)
 	}
 	
 	method vida() = armadura.vida()
@@ -58,6 +67,7 @@ object avion inherits GenericObject(collider = avionCollider, position = new Mut
 		objetoQueChoca.reducirVida(100)
 	}
 
+    method tipoMunicion() = rifle.cartuchoSeleccionado().balaImage()
 
    	method dispara() {arma.disparar()}
 
@@ -103,6 +113,7 @@ object rifle
 		self.lanzarProjectil(cartuchoQueSeDispara.bala())
 		}
 	}
+	
 	
 	
 	method lanzarProjectil(bala)
@@ -155,28 +166,21 @@ class AvionCompanion inherits TextObject
 
 object ammoTracker inherits AvionCompanion
 {
-	method text() = "Ammo: " + avion.municionActual().toString() 
-	
-		
-	override method reset()
-	{
-		super()
-		position.goUp(1)
-	}
+	method image() = "am" + (avion.municionActual()/10).roundUp(0).toString() + ".png"
 }
 
 object vidaTracker inherits AvionCompanion
 {
-	method text() = "Vida: " + avion.vida().toString()
+	method image() = "hp" + (avion.vida().min(50).toString()) + ".png"
 	
-	override method reset() 
-	{
-
-	super()
-	position.goDown(1)
-	}
 
 }
+
+object ammoTypeTracker inherits AvionCompanion
+{
+	method image() = "s" + avion.tipoMunicion() 
+}
+
 
 
 

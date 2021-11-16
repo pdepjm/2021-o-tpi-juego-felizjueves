@@ -4,7 +4,8 @@ import configuracion.*
 import avion.*
 import balas.*
 import sonidos.*
-
+import direcciones.*
+import pepita.*
 
 class Asteroide inherits MovingObject(collider = asteroideCollider)
 {
@@ -27,6 +28,7 @@ class Asteroide inherits MovingObject(collider = asteroideCollider)
 	
 	method danio() = danio
 }
+
 
 
 

@@ -12,6 +12,7 @@ program juego {
 	game.width(20) 
 	
 	configuracion.mainMenu()
+
 	
 	game.start()
 

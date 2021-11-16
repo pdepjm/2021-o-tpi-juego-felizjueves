@@ -6,6 +6,7 @@ object izquierda {
 
 object derecha {
 	method proximaPosicion(posicionActual) { posicionActual.goRight(1) }
+	method movimientoHorizontal(posicionActual,velocidad) {posicionActual.goRight(velocidad)}
 }
 
 object arriba {

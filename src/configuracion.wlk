@@ -16,11 +16,17 @@ object configuracion {
 	const  mainTheme = new Sonido(sonido = "mainTheme.mp3")
 	const  gameOverSound = new Sonido(sonido = "gameOver.wav")
 	const pepitaTheme = new Sonido(sonido =  "pepitaTheme.mp3")
+	var property volumen = 30
 	
 	const carcazasDisponibles = [carcazaNormal,carcazaDeMuniciones,carcazaInfinita]
 	
 	const property posicionesNoUsadas = []
 	const property posicionesActivas = []
+	
+	method cambiarVolumen(x)
+	{
+		volumen = (volumen+x).max(0).min(100)
+	}
 	
 	method mainTheme() {return mainTheme}
 	method gameOverSound() { return gameOverSound}
@@ -33,12 +39,15 @@ object configuracion {
 		self.configurarColision(avion)
 		self.configurarTeclas()
 		self.iniciarEventos()
+		self.iniciarEntidades()
 	}
 	
 	method iniciarSonidos()
 	{
 		if (pepitaTheme.isActive()) pepitaTheme.stop()
-		mainTheme.play(50)
+		mainTheme.play(90)
+		keyboard.m().onPressDo({self.cambiarVolumen(10)})
+	keyboard.n().onPressDo({self.cambiarVolumen(-10)})
 	}
 	
 	method resetearEntidades()
@@ -72,6 +81,7 @@ object configuracion {
 		game.addVisual(avion)	
 		game.addVisual(ammoTracker)
 		game.addVisual(vidaTracker)
+		game.addVisual(ammoTypeTracker)
 		game.addVisual(pointTracker)	
 	}
 	
@@ -195,7 +205,8 @@ object configuracion {
 		game.onTick(1200,"Lanzar laser", {lanzadorDeLaser.disparar1()})
 		game.onTick(3000, "Lanzar asteroide", {lanzadorDeAsteroide.lanzar()})
 		game.onTick(6200,"Lanzar provision", {lanzadorDeProvisiones.lanzar()})
-		game.onTick(4000,"Teleport pepita", {pepita.teleport()})
+		game.onTick(10000,"Teleport pepita", {pepita.teleport()})
+		game.onTick(400,"Mover pepita",{pepita.moverse()})
 		game.onTick(6000, "Pepita ataca", {pepita.attack()})
 	}
 	

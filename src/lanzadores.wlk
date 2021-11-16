@@ -32,9 +32,10 @@ object lanzadorDeProvisiones inherits  Lanzador(listaDeTemplates = [new Template
 {}
 
 
+
 object lanzadorDeLaser
 {
-	const laserAnimation = new StaticAnimation(frameRate = 70, animationImages = ["laser1.png", "laser2.png", "laser3.png","laser2.png","laser1.png"])
+	const laserAnimation = new StaticAnimation(frameRate = 25, animationImages = ["001.png","002.png","003.png","004.png","005.png","006.png","007.png","008.png","009.png","010.png","011.png"])
     const warningAnimation = new StaticAnimation(frameRate = 50, animationImages = ["warning.png","warning1.png","warning2.png","warning3.png","warning2.png","warning1.png"])
 	const laserSound = new Sonido(sonido = "laser.wav")
 	const warningSound = new Sonido(sonido = "warning.wav")
@@ -44,15 +45,15 @@ object lanzadorDeLaser
 	{
 		position.goToRandom(game.height() - 1)
 		warningAnimation.runAnimation(position,900)
-		warningSound.play()
+		warningSound.play(20)
 		game.schedule(900,{self.disparar2()})
 	}
 	
 	method disparar2()
 	{
 		position.goDown(game.height())
-		laserSound.play(50)
-		laserAnimation.runAnimation(position,350)
+		laserSound.play(20)
+		laserAnimation.runAnimation(position,275)
 		if(avion.chocaContraLaser(position.x()))
 		{
 			avion.reducirVida(2)
