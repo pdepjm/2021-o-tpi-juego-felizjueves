@@ -64,7 +64,7 @@ object pepita inherits GenericObject(collider = pepitaCollider, image = "pepita.
 		super()
 		configuracion.reventarAsteroides()
 		game.schedule(2100,{pointTracker.aumentarPuntaje(9999999999)})
-		game.schedule(2000,{configuracion.configuracionDeJuego()})
+		game.schedule(2300,{configuracion.gameOver()})
 	}
 	
 	method moverse()
